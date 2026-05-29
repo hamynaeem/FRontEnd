@@ -1,0 +1,50 @@
+<section class="cart container">
+	<h2>Shopping Cart</h2>
+
+	<div *ngIf="items.length === 0">
+		<p>Your cart is empty.</p>
+		<a routerLink="/Home" class="btn">Continue shopping</a>
+	</div>
+
+	<div *ngIf="items.length > 0" class="cart-layout">
+		<table class="cart-table">
+			<thead>
+				<tr>
+					<th>Product</th>
+					<th>Price</th>
+					<th>Quantity</th>
+					<th>Subtotal</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let it of items">
+					<td class="product-cell">
+						<img [src]="it.image" alt="{{ it.title }}" />
+						<div class="prod-meta">
+							<div class="title">{{ it.title }}</div>
+						</div>
+					</td>
+					<td>{{ formatPrice(it.price) }}</td>
+					<td>
+						<div class="qty">
+							<button class="btn" type="button" (click)="qtyChanged(it, -1)" [attr.aria-label]="'Decrease quantity of ' + it.title">-</button>
+							<span class="qty-val" aria-live="polite">{{ it.qty }}</span>
+							<button class="btn" type="button" (click)="qtyChanged(it, 1)" [attr.aria-label]="'Increase quantity of ' + it.title">+</button>
+						</div>
+					</td>
+					<td>{{ formatPrice((it.price || 0) * it.qty) }}</td>
+					<td><button class="btn remove-btn" type="button" (click)="remove(it)" [attr.aria-label]="'Remove ' + it.title">Remove</button></td>
+					</tr>
+			</tbody>
+		</table>
+
+		<aside class="cart-summary" role="region" aria-labelledby="cartTotalsHeading">
+			<h3 id="cartTotalsHeading">Cart Totals</h3>
+			<div class="line"><span>Subtotal</span><span aria-live="polite">{{ formatPrice(subtotal) }}</span></div>
+			<div class="line"><span>GOP Tax (4%)</span><span aria-live="polite">{{ formatPrice(tax) }}</span></div>
+			<div class="line total"><span>Total</span><span aria-live="polite">{{ formatPrice(total) }}</span></div>
+			<a routerLink="/checkout" class="btn checkout-btn">Proceed to Checkout</a>
+		</aside>
+	</div>
+</section>

@@ -1,0 +1,75 @@
+<section class="pd-wrapper container" *ngIf="product; else noProduct">
+	<nav class="pd-breadcrumbs"><a routerLink="/">Home</a> › <a routerLink="/store">Store</a> › <span>{{product.title}}</span></nav>
+
+	<div class="pd-grid">
+		<aside class="left-card">
+			<div class="image-card" (click)="openLightbox()" role="button" tabindex="0">
+				<img [src]="product.image" [alt]="product.title" />
+			</div>
+		</aside>
+
+		<div class="right-panel">
+			<h1 class="pd-title">{{product.title}}</h1>
+
+			<div class="pd-meta">
+				<div class="pd-price">{{product.price}}</div>
+				<div class="pd-availability" [class.available]="product.available">{{ product.available ? 'In stock' : 'Available on Pre-Order' }}</div>
+			</div>
+
+			<p class="pd-desc">{{product.description}}</p>
+
+			<div class="pd-specs" *ngIf="product.specs">
+				<div class="spec"><strong>RAM</strong><span>{{product.specs.ram}}</span></div>
+				<div class="spec"><strong>ROM</strong><span>{{product.specs.rom}}</span></div>
+				<div class="spec"><strong>Battery</strong><span>{{product.specs.battery}}</span></div>
+				<div class="spec"><strong>Display</strong><span>{{product.specs.display}}</span></div>
+				<div class="spec"><strong>Camera</strong><span>{{product.specs.camera}}</span></div>
+				<div class="spec"><strong>CPU</strong><span>{{product.specs.processor}}</span></div>
+			</div>
+
+			<div class="pd-actions">
+				<div class="qty">
+					<label>Qty</label>
+					<div class="qty-input">
+						<button type="button" (click)="qty = qty > 1 ? qty - 1 : 1">−</button>
+						<input type="number" min="1" [(ngModel)]="qty" />
+						<button type="button" (click)="qty = qty + 1">+</button>
+					</div>
+				</div>
+
+				<div class="buttons">
+					<button class="btn add" (click)="addToCart()">Add to Cart</button>
+					<button class="btn buy" (click)="buyNow()" [disabled]="!product.available">Buy Now</button>
+				</div>
+			</div>
+
+			<div class="pd-extra">
+				<button class="link modern">Share</button>
+				<button class="link modern">Compare</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- lightbox -->
+	<div class="pd-lightbox" *ngIf="showLightbox" (click)="closeLightbox()">
+		<div class="pd-lightbox-inner" (click)="$event.stopPropagation()">
+			<button class="modal-close" (click)="closeLightbox()">×</button>
+			<div class="lightbox-content">
+				<img [src]="product.image" [alt]="product.title" [style.transform]="'scale(' + zoom + ')'" />
+			</div>
+			<div class="zoom-controls">
+				<button (click)="zoomOut($event)">−</button>
+				<button (click)="resetZoom($event)">Reset</button>
+				<button (click)="zoomIn($event)">+</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<ng-template #noProduct>
+	<section class="no-product container">
+		<h2>Product Details</h2>
+		<p>No product selected.</p>
+		<a routerLink="/" class="btn">Back to Home</a>
+	</section>
+</ng-template>

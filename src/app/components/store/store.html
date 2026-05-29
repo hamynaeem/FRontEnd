@@ -1,0 +1,51 @@
+<section class="new-arrivals">
+    <div class="container">
+        <div class="store-header">
+            <h3 class="section-title">New Arrivals</h3>
+            <div class="controls">
+                <input class="search" type="search" placeholder="Search products..." aria-label="Search products">
+                <select class="sort" aria-label="Sort products">
+                    <option value="popular">Popular</option>
+                    <option value="new">Newest</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="arrivals-row">
+            <aside class="promo-card">
+                <div class="promo-inner">
+                    <h4>Wholesale Spare Parts</h4>
+                    <p>Buy More, Save More!</p>
+                    <button class="btn primary whatsapp">Order Now</button>
+                    <img src="assets/images/s26.png" alt="promo">
+                </div>
+            </aside>
+
+                <div class="product-grid" role="list">
+                <article class="product-card liquid-3d" #card role="listitem" *ngFor="let p of products" (mousemove)="onCardMove($event, card)" (mouseleave)="onCardLeave(card)" (mouseenter)="onCardEnter(card)">
+                    <img [src]="p.image" [alt]="p.title">
+                    <div class="meta">
+                        <h5>{{ p.title }}</h5>
+                        <p class="subtitle">{{ p.subtitle }}</p>
+                        <div class="rating" [attr.aria-label]="'Rating: ' + p.rating + ' out of 5'">
+                            <span *ngFor="let s of [1,2,3,4,5]; let i = index" [class.filled]="i < p.rating">★</span>
+                        </div>
+                        <p class="status" [ngClass]="{ 'available': p.status === 'in-stock', 'muted': p.status !== 'in-stock' }">
+                            {{ p.status === 'in-stock' ? 'In stock' : (p.status === 'preorder' ? 'Available on Pre-Order' : p.status) }}
+                        </p>
+                        <div class="price">
+                            <span *ngIf="p.oldPrice" class="old">Rs {{ p.oldPrice | number }}</span>
+                            <span class="new">Rs {{ p.price | number }}</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn primary">Add to Cart</button>
+                            <button class="btn outline">View</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>

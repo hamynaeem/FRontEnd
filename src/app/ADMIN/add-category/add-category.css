@@ -1,0 +1,102 @@
+
+.add-category-container {
+	max-width: 820px;
+	margin: 40px auto;
+	background: #fff;
+	border-radius: 16px;
+	box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+	padding: 32px 28px;
+	font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.category-form {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+.category-form h2 {
+	text-align: center;
+	margin-bottom: 18px;
+	font-size: 1.5rem;
+	color: #222;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+label {
+	font-weight: 500;
+	color: #444;
+}
+
+input[type="text"] {
+	padding: 10px 12px;
+	border: 1px solid #d1d5db;
+	border-radius: 6px;
+	font-size: 1rem;
+	transition: border-color 0.2s;
+}
+
+input[type="text"]:focus {
+	border-color: #0078d4;
+	outline: none;
+}
+
+.submit-btn {
+	margin-top: 18px;
+	padding: 12px 0;
+	background: linear-gradient(90deg, #0078d4 0%, #00b4d8 100%);
+	color: #fff;
+	border: none;
+	border-radius: 8px;
+	font-size: 1.1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background 0.2s, box-shadow 0.2s;
+	box-shadow: 0 2px 8px rgba(0,120,212,0.08);
+}
+
+.submit-btn:hover {
+	background: linear-gradient(90deg, #005fa3 0%, #0096b2 100%);
+}
+
+.existing-categories{ margin-top:20px }
+.existing-categories h3{ margin:0 0 12px }
+.categories-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px }
+.cat{ display:flex; align-items:center; gap:12px; padding:10px; border-radius:8px; background:#fbfdff; border:1px solid #eef3f8 }
+.cat-icon{ font-size:20px; width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:6px; background:#fff }
+.cat-name{ font-weight:600 }
+.cat-parent{ color:#6b7280; font-size:13px }
+.cat-actions .btn{ padding:6px 8px; border-radius:6px; background:#fff; border:1px solid #e6e9ef; cursor:pointer }
+.error{ color:#c0392b; margin-top:8px }
+
+/* icon buttons */
+.cat-actions{ margin-left:auto; display:flex; gap:8px }
+.icon-btn{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; border:1px solid #e6e9ef; background:#fff; cursor:pointer }
+.icon-btn.edit{ color:#0b74ff }
+.icon-btn.delete{ color:#c0392b }
+.icon-btn:hover{ transform:translateY(-2px); box-shadow:0 6px 18px rgba(12,20,30,0.06) }
+
+/* responsive: show actions on hover for larger screens */
+@media(min-width:700px){
+	.categories-list .cat-actions{ opacity:0; transform: translateX(8px); transition: all .18s }
+	.categories-list li:hover .cat-actions{ opacity:1; transform: translateX(0) }
+}
+@media(max-width:699px){
+	.icon-btn{ width:40px; height:40px }
+}
+
+/* Add button and modal styles for the add-category page */
+.ac-top{ display:flex; justify-content:flex-end; margin-bottom:14px }
+.ac-add-btn{ background:#0b74ff; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer }
+.ac-modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; z-index:1200 }
+.ac-modal-panel{ width:640px; max-width:94%; background:#fff; border-radius:12px; padding:22px; box-shadow: 0 20px 60px rgba(6,22,37,0.4); position:relative }
+.ac-modal-close{ position:absolute; right:12px; top:10px; background:transparent; border:none; font-size:20px; cursor:pointer }
+
+.form-actions{ display:flex; gap:8px; align-items:center }
+.cancel-btn{ background:transparent; border:1px solid #e6e9ef; padding:8px 10px; border-radius:8px; cursor:pointer }
+

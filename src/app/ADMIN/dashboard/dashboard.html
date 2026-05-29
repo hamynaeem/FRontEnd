@@ -1,0 +1,54 @@
+<div class="admin-shell" [class.sidebar-collapsed]="collapsed">
+	<aside class="admin-sidebar" [class.collapsed]="collapsed">
+		<div class="sidebar-top">
+			<div class="brand">MyApp <span class="label-small">Admin</span></div>
+			<button class="collapse-toggle" aria-label="Toggle sidebar" (click)="toggleSidebar()">☰</button>
+		</div>
+
+		<nav class="sidebar-nav">
+			<ul>
+				<li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+					<a routerLink="/admin/dashboard">
+						<span class="icon">📊</span>
+						<span class="label">Overview</span>
+					</a>
+				</li>
+				<li routerLinkActive="active">
+					<a routerLink="/admin/add-category">
+						<span class="icon">🗂️</span>
+						<span class="label">Categories</span>
+					</a>
+				</li>
+				<li routerLinkActive="active">
+					<a routerLink="/admin/add-products">
+						<span class="icon">➕</span>
+						<span class="label">Products</span>
+					</a>
+				</li>
+				<li routerLinkActive="active">
+					<a routerLink="/admin/view-orders">
+						<span class="icon">🧾</span>
+						<span class="label">Orders</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+
+		<div class="sidebar-footer">
+			<button class="btn" (click)="openInPage('/admin/add-category')">Open Category Page</button>
+			<button class="btn logout" (click)="logout()">Logout</button>
+		</div>
+	</aside>
+
+	<main class="admin-main">
+	 
+
+		<section class="admin-content">
+			
+
+			<div class="panel content-panel">
+				<router-outlet></router-outlet>
+			</div>
+		</section>
+	</main>
+</div>

@@ -1,0 +1,9 @@
+<div class="snackbar-wrapper" [class.show]="visible" aria-live="polite">
+  <div class="snackbar" [class.success]="type==='success'" [class.error]="type==='error'">
+    <div class="snackbar-message">{{message}}</div>
+    <div class="snackbar-actions">
+      <button *ngIf="actionText" class="snack-action" (click)="doAction()">{{actionText}}</button>
+      <button class="snack-close" aria-label="Close" (click)="hide()">✕</button>
+    </div>
+  </div>
+</div>

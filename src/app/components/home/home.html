@@ -1,0 +1,189 @@
+<section class="hero-slider">
+  
+
+    <div class="hero-track">
+        <!-- Slide 1 -->
+        <div class="hero-slide hs1">
+            <div class="hero-glow"></div>
+            <div class="hero-content">
+                <span class="hero-badge">🔥 Hot Deal</span>
+                <h1>Great Deals on<br><span class="hero-highlight">Tablets & iPads</span></h1>
+                <p>Tested Quality and Seamless Performance</p>
+                <div class="hero-actions">
+                    <button class="hero-btn primary">Find Your Tablet</button>
+                    <button class="hero-btn ghost">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-img-wrap">
+                    <img src="assets/images/s26.png" alt="tablet">
+                    <div class="hero-img-glow"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="hero-slide hs2">
+            <div class="hero-glow"></div>
+            <div class="hero-content">
+                <span class="hero-badge">🛠️ Genuine Parts</span>
+                <h1>Original<br><span class="hero-highlight">Spare Parts</span></h1>
+                <p>Mobile, Laptop, Smart Watch &amp; Tablet parts</p>
+                <div class="hero-actions">
+                    <button class="hero-btn primary">Find Parts</button>
+                    <button class="hero-btn ghost">Browse All</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-img-wrap">
+                    <img src="assets/images/s26.png" alt="parts">
+                    <div class="hero-img-glow"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="hero-slide hs3">
+            <div class="hero-glow"></div>
+            <div class="hero-content">
+                <span class="hero-badge">✅ Trusted Quality</span>
+                <h1>Used Mobiles<br><span class="hero-highlight">You Can Trust</span></h1>
+                <p>Pakistan's Leading Collection — USA &amp; UAE Imports</p>
+                <div class="hero-actions">
+                    <button class="hero-btn primary">Explore Now</button>
+                    <button class="hero-btn ghost">View All</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-img-wrap">
+                    <img src="assets/images/s26.png" alt="mobiles">
+                    <div class="hero-img-glow"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="hero-slide hs4">
+            <div class="hero-glow"></div>
+            <div class="hero-content">
+                <span class="hero-badge">⚡ New Arrivals</span>
+                <h1>iPad &amp;<br><span class="hero-highlight">Tablets</span></h1>
+                <p>Power Up Your Digital Lifestyle</p>
+                <div class="hero-actions">
+                    <button class="hero-btn primary">Grab Yours</button>
+                    <button class="hero-btn ghost">See Offers</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-img-wrap">
+                    <img src="assets/images/s26.png" alt="ipad">
+                    <div class="hero-img-glow"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dots -->
+    <div class="hero-dots">
+        <label for="h1"><span></span></label>
+        <label for="h2"><span></span></label>
+        <label for="h3"><span></span></label>
+        <label for="h4"><span></span></label>
+    </div>
+
+    <!-- Prev / Next arrows -->
+    <div class="hero-arrows">
+        <label for="h4" class="arrow-btn" id="arr-prev-1">&#8592;</label>
+        <label for="h2" class="arrow-btn" id="arr-next-1">&#8594;</label>
+    </div>
+</section>
+
+<section class="new-arrivals">
+    <div class="container">
+        <h3 class="section-title">New Arrival's</h3>
+
+        <div class="arrivals-row">
+            <aside class="left-aside">
+                <div class="categories">
+                    <h4 class="cat-title">CATEGORIES</h4>
+                    <ul>
+                        <li *ngFor="let c of categories; let i = index" [class.open]="expanded[i]">
+                            <a [routerLink]="c.link" class="cat-link">
+                                <span class="icon">{{c.icon}}</span>
+                                <span class="label">{{c.name}}</span>
+                            </a>
+                            <button class="toggle-btn" type="button" (click)="toggle(i, $event)" aria-label="Toggle {{c.name}}">
+                                <span class="caret">▾</span>
+                            </button>
+                            <div class="sub-items" role="menu" aria-hidden="{{!expanded[i]}}">
+                                <ng-container *ngIf="c.children?.length; else defaultSub">
+                                    <a *ngFor="let child of c.children" [routerLink]="child.link" role="menuitem">{{child.name}}</a>
+                                </ng-container>
+                                <ng-template #defaultSub>
+                                    <a [routerLink]="c.link" role="menuitem">View all {{c.name}}</a>
+                                    <a [routerLink]="c.link + '/top-deals'" role="menuitem">Top Deals</a>
+                                </ng-template>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </aside>
+
+            <div class="product-grid">
+                <a routerLink="/product/zte-nubia" class="product-link">
+                <article class="product-card">
+                    <img src="assets/images/s26.png" alt="ZTE Nubia">
+                    <div class="meta">
+                        <h5>ZTE Nubia Z50s Pro LCD Panel</h5>
+                        <p class="subtitle">ZTE LCD Panel Unit</p>
+                        <div class="rating">★★★★★</div>
+                        <p class="status muted">Available on Pre-Order</p>
+                        <div class="price"><span class="old">Rs 22,499</span> <span class="new">Rs 19,649</span></div>
+                    </div>
+                </article>
+                </a>
+
+                <a routerLink="/product/nokia-g300" class="product-link">
+                <article class="product-card">
+                    <img src="assets/images/s26.png" alt="Nokia G300">
+                    <div class="meta">
+                        <h5>Nokia G300 LCD Panel</h5>
+                        <p class="subtitle">Nokia LCD Panel Unit</p>
+                        <div class="rating">★★★★★</div>
+                        <p class="status muted">Available on Pre-Order</p>
+                        <div class="price"><span class="old">Rs 4,999</span> <span class="new">Rs 3,999</span></div>
+                    </div>
+                </article>
+                </a>
+
+                <a routerLink="/product/xiaomi-poco-x4" class="product-link">
+                <article class="product-card">
+                    <img src="assets/images/s26.png" alt="Xiaomi Poco">
+                    <div class="meta">
+                        <h5>Xiaomi Poco X4 Pro 5G LCD Panel</h5>
+                        <p class="subtitle">Xiaomi LCD Panel Unit</p>
+                        <div class="rating">★★★★★</div>
+                        <p class="status available">In stock</p>
+                        <div class="price"><span class="new">Rs 4,649</span></div>
+                    </div>
+                </article>
+                </a>
+
+                <a routerLink="/product/xiaomi-redmi-note11" class="product-link">
+                <article class="product-card">
+                    <img src="assets/images/s26.png" alt="Xiaomi Redmi">
+                    <div class="meta">
+                        <h5>Xiaomi Redmi Note 11 Pro Plus 5G LCD Panel</h5>
+                        <p class="subtitle">Xiaomi LCD Panel Unit</p>
+                        <div class="rating">★★★★★</div>
+                        <p class="status available">In stock</p>
+                        <div class="price"><span class="new">Rs 4,649</span></div>
+                    </div>
+                </article>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

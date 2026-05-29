@@ -1,0 +1,88 @@
+ 	<!-- When used as a page, show an Add button that opens a modal; when embedded (dashboard modal), show the inline form -->
+	<div *ngIf="showAddButton" class="ac-top">
+		<button class="ac-add-btn" (click)="showModal = true">+ Add</button>
+	</div>
+
+	<!-- Inline form shown when embedded (dashboard modal) or when showAddButton is false -->
+	<form *ngIf="!showAddButton" class="category-form" (submit)="save($event)">
+		<h2>{{ editingId ? 'Edit Category' : 'Add New Category' }}</h2>
+
+		<div class="form-group">
+			<label for="name">Category Name</label>
+			<input id="name" name="name" type="text" [(ngModel)]="model.name" required placeholder="Enter category name" />
+		</div>
+
+		<div class="form-group">
+			<label for="icon">Icon (emoji or SVG URL)</label>
+			<input id="icon" name="icon" type="text" [(ngModel)]="model.icon" placeholder="e.g. 📱 or /assets/icons/mobile.svg" />
+		</div>
+
+		<div class="form-group">
+			<label for="parent">Parent Category</label>
+			<input id="parent" name="parent" type="text" [(ngModel)]="model.parent" placeholder="Optional: Parent category name" />
+		</div>
+
+		<div class="form-actions">
+			<button class="submit-btn" type="submit">{{ editingId ? 'Update' : 'Save' }}</button>
+			<button *ngIf="editingId" type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+		</div>
+
+		<div class="error" *ngIf="error">{{error}}</div>
+	</form>
+
+	<!-- Saved categories list (always visible) -->
+	<section class="existing-categories">
+		<h3>Saved Categories</h3>
+		<div *ngIf="categories.length === 0">No categories yet.</div>
+		<ul *ngIf="categories.length > 0" class="categories-list">
+			<li *ngFor="let c of categories">
+				<div class="cat">
+					<div class="cat-left">
+						<div class="cat-icon">{{c.icon || '📁'}}</div>
+					</div>
+					<div class="cat-mid">
+						<div class="cat-name">{{c.name}}</div>
+						<div class="cat-parent" *ngIf="c.parent">Parent: {{c.parent}}</div>
+					</div>
+					<div class="cat-actions">
+						<button class="icon-btn edit" aria-label="Edit category" (click)="$event.stopPropagation(); edit(c)">✏️</button>
+						<button class="icon-btn delete" aria-label="Delete category" (click)="$event.stopPropagation(); remove(c.id)">🗑️</button>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</section>
+
+	<!-- Modal used by the page Add button -->
+	<div *ngIf="showModal" class="ac-modal-backdrop" (click)="showModal = false">
+		<div class="ac-modal-panel" (click)="$event.stopPropagation()">
+			<button class="ac-modal-close" aria-label="Close" (click)="showModal = false">×</button>
+			<form class="category-form" (submit)="save($event)">
+				<h2>{{ editingId ? 'Edit Category' : 'Add New Category' }}</h2>
+
+				<div class="form-group">
+					<label for="name2">Category Name</label>
+					<input id="name2" name="name2" type="text" [(ngModel)]="model.name" required placeholder="Enter category name" />
+				</div>
+
+				<div class="form-group">
+					<label for="icon2">Icon (emoji or SVG URL)</label>
+					<input id="icon2" name="icon2" type="text" [(ngModel)]="model.icon" placeholder="e.g. 📱 or /assets/icons/mobile.svg" />
+				</div>
+
+				<div class="form-group">
+					<label for="parent2">Parent Category</label>
+					<input id="parent2" name="parent2" type="text" [(ngModel)]="model.parent" placeholder="Optional: Parent category name" />
+				</div>
+
+				<div class="form-actions">
+					<button class="submit-btn" type="submit">{{ editingId ? 'Update' : 'Save' }}</button>
+					<button *ngIf="editingId" type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+				</div>
+
+				<div class="error" *ngIf="error">{{error}}</div>
+			</form>
+		</div>
+	</div>
+
+ 

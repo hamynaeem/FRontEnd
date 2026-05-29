@@ -1,0 +1,43 @@
+<section class="smartphones-list container">
+	<header class="list-header">
+		<h2>Price List of Samsung Mobiles in Pakistan</h2>
+		<p class="lead">Showing you {{ products.length }} Samsung Mobiles Prices in Pakistan. Priceoye helps you find the lowest online Prices.</p>
+	</header>
+
+	<div class="list-body">
+		<aside class="filters">
+			<div class="filter-block">
+				<h4>Sorting</h4>
+				<label><input type="checkbox"> Popularity</label>
+				<label><input type="checkbox"> Prices (Low to High)</label>
+				<label><input type="checkbox"> Prices (High to Low)</label>
+			</div>
+			<div class="filter-block">
+				<h4>Express Delivery</h4>
+				<label><input type="checkbox"> Express Delivery</label>
+			</div>
+			<div class="filter-block">
+				<h4>In Stock</h4>
+				<label><input type="checkbox"> In Stock</label>
+			</div>
+			<div class="filter-block">
+				<h4>Price Range</h4>
+				<button class="price-range">Below Rs 15,000</button>
+				<button class="price-range">Rs 15,000 - Rs 25,000</button>
+			</div>
+		</aside>
+
+		<main class="grid">
+			<article class="product-card" *ngFor="let p of products">
+				<img [src]="p.img" [alt]="p.title">
+				<div class="card-meta">
+					<div class="rating">★ {{p.rating}} {{p.reviews}} Reviews</div>
+					<h4>{{p.title}}</h4>
+					<p class="subtitle">{{p.subtitle}}</p>
+					<div class="price">Rs <strong>{{p.price | number}}</strong> <span class="badge">{{p.badge}}</span></div>
+					<div class="fast">Fast <strong>Delivery</strong></div>
+				</div>
+			</article>
+		</main>
+	</div>
+</section>

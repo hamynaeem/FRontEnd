@@ -1,0 +1,119 @@
+<div class="overview-root">
+  <div class="notice">We regret to inform you that our server is currently experiencing technical difficulties.</div>
+
+  <div class="overview-top">
+    <div class="summary-cards">
+      <div class="info-card">
+        <div class="info-left">
+          <div class="icon">📦</div>
+        </div>
+        <div class="info-right">
+          <div class="small">Total Orders</div>
+          <div class="big">{{stats.orders | number}}</div>
+          <div class="meta">+2.3% Last Week</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-left"><div class="icon">💼</div></div>
+        <div class="info-right">
+          <div class="small">Booked Revenue</div>
+          <div class="big">₹{{stats.revenue | number}}</div>
+          <div class="meta">vs last month</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-left"><div class="icon">🎯</div></div>
+        <div class="info-right">
+          <div class="small">Deals</div>
+          <div class="big">{{stats.deals}}</div>
+          <div class="meta">Last Month</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-left"><div class="icon">👥</div></div>
+        <div class="info-right">
+          <div class="small">New Leads</div>
+          <div class="big">{{stats.leads | number}}</div>
+          <div class="meta">this week</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="performance-card">
+      <div class="perf-header">
+        <h3>Performance</h3>
+        <div class="range">1M</div>
+      </div>
+      <div class="perf-chart">
+        <div class="bars">
+          <div *ngFor="let v of chart" class="bar" [style.height.%]="v"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overview-mid">
+    <div class="card conversions">
+      <h4>Conversions</h4>
+      <div class="donut-wrap">
+        <svg viewBox="0 0 36 36" class="donut">
+          <path class="donut-ring" d="M18 2.0845
+            a 15.9155 15.9155 0 0 1 0 31.831
+            a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          <path class="donut-segment" stroke-dasharray="65,35" d="M18 2.0845
+            a 15.9155 15.9155 0 0 1 0 31.831
+            a 15.9155 15.9155 0 0 1 0 -31.831"/>
+        </svg>
+        <div class="donut-text">65.2%<div class="sub">Returning Customer</div></div>
+      </div>
+    </div>
+
+    <div class="card map">
+      <h4>Sessions by Country</h4>
+      <div class="map-placeholder">[Map Placeholder]</div>
+      <div class="map-stats">
+        <div>This Week <strong>23.5k</strong></div>
+        <div>Last Week <strong>41.05k</strong></div>
+      </div>
+    </div>
+
+    <div class="card top-pages">
+      <h4>Top Pages</h4>
+      <table>
+        <thead><tr><th>Page Path</th><th>Page Views</th><th>Exit Rate</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let p of topPages">
+            <td>{{p.path}}</td>
+            <td>{{p.views}}</td>
+            <td>{{p.exit}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="recent-orders card">
+    <div class="ro-header">
+      <h4>Recent Orders</h4>
+      <button class="create">+ Create Order</button>
+    </div>
+    <table class="orders-table">
+      <thead><tr><th>ID</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let o of recentOrders">
+          <td>{{o.id}}</td>
+          <td>{{o.customer}}</td>
+          <td>₹{{o.total}}</td>
+          <td>{{o.status}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="overview-root">
+  <h2>Welcome, Admin</h2>
+  <p>Select a section from the left to manage the store or view quick stats.</p>
+</div>

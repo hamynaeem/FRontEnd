@@ -1,0 +1,33 @@
+<section class="smartwatches-section">
+	<div class="section-inner">
+		<header class="sw-header">
+			<h3 class="sw-title">Latest Smart Watches</h3>
+			<button class="view-all">View All</button>
+		</header>
+
+		<div class="carousel">
+ 			<div class="products-grid">
+				<article class="product-card" *ngFor="let p of products" [routerLink]="['/product', p.id]" role="link">
+					<div class="card-media">
+						<img [src]="p.img" [alt]="p.title">
+						<div class="rating">
+							<span class="star">★</span>
+							<span>{{p.rating}}</span>
+							<small>{{p.reviews}} Reviews</small>
+						</div>
+					</div>
+					<div class="card-body">
+						<h4 class="product-title">{{p.title}}</h4>
+						<div class="price-row">
+							<div class="price">Rs <strong>{{p.price | number}}</strong></div>
+							<div class="badge">{{p.discount}} OFF</div>
+						</div>
+						<div class="meta-row">
+							<span class="fast">Fast <strong>Delivery</strong></span>
+						</div>
+					</div>
+				</article>
+			</div>
+ 		</div>
+	</div>
+</section>

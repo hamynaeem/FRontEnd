@@ -1,0 +1,109 @@
+<section class="checkout-container">
+  <form class="checkout-form" (ngSubmit)="placeOrder($event)">
+    <h2 class="checkout-title">Checkout</h2>
+
+    <div class="addresses">
+      <div class="addresses-head">
+        <h3>Delivery Address</h3>
+        <button type="button" class="btn secondary" (click)="openNewAddress()">Add New Address</button>
+      </div>
+
+      <div *ngIf="addresses.length > 0" class="addresses-list">
+        <div class="address-card" *ngFor="let a of addresses">
+          <label class="address-radio">
+            <input type="radio" name="selectedAddress" [value]="a.id" [checked]="selectedAddressId === a.id" (change)="selectAddress(a.id)" />
+            <div class="address-body">
+              <div class="addr-name">{{ a.name }}</div>
+              <div class="addr-line">{{ a.address }}, {{ a.city }} {{ a.province }}, {{ a.country }}</div>
+              <div class="addr-phone">{{ a.phone }}</div>
+            </div>
+          </label>
+          <div class="addr-actions">
+            <button type="button" class="link" (click)="editAddress(a.id)">Edit</button>
+            <button type="button" class="link danger" (click)="deleteAddress(a.id)">Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="addresses.length === 0" class="no-addresses">
+        <p>No saved addresses yet. Add one to speed checkout.</p>
+      </div>
+
+      <div class="address-form" *ngIf="showAddressForm">
+        <h4>{{ editingAddress ? 'Edit Address' : 'Add Address' }}</h4>
+        <div class="form-row-cols">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input id="name" name="name" type="text" required placeholder="Full name" [(ngModel)]="name" (ngModelChange)="scheduleSaveDraft()" />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="text" placeholder="Phone" [(ngModel)]="phone" (ngModelChange)="scheduleSaveDraft()" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input id="address" name="address" type="text" required placeholder="Street address" [(ngModel)]="address" (ngModelChange)="scheduleSaveDraft()" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label for="city">City</label>
+            <input id="city" name="city" type="text" required placeholder="City" [(ngModel)]="city" (ngModelChange)="scheduleSaveDraft()" />
+          </div>
+          <div class="form-group half">
+            <label for="province">Province</label>
+            <input id="province" name="province" type="text" placeholder="Province" [(ngModel)]="province" (ngModelChange)="scheduleSaveDraft()" />
+          </div>
+        </div>
+
+        <div class="form-row-cols">
+          <div class="form-group">
+            <label for="country">Country</label>
+            <input id="country" name="country" type="text" placeholder="Country" [(ngModel)]="country" (ngModelChange)="scheduleSaveDraft()" />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn primary" (click)="saveAddress()">Save Address</button>
+          <button type="button" class="btn secondary" (click)="showAddressForm = false">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment / Billing -->
+    <div class="form-group payment-method">
+      <label>Payment Method</label>
+      <div class="payment-options">
+        <input type="radio" id="credit" name="payment" value="credit" [checked]="paymentMethod() === 'credit'" (change)="onPaymentChange($event)" />
+        <label for="credit">Credit Card</label>
+        <input type="radio" id="cod" name="payment" value="cod" [checked]="paymentMethod() === 'cod'" (change)="onPaymentChange($event)" />
+        <label for="cod">Cash on Delivery</label>
+      </div>
+    </div>
+
+    <div *ngIf="paymentMethod() === 'credit'" class="card-block">
+      <div class="form-group">
+        <label for="card">Credit Card Number</label>
+        <input id="card" name="card" type="text" maxlength="19" placeholder="1234 5678 9012 3456" [(ngModel)]="card" (ngModelChange)="scheduleSaveDraft()" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half">
+          <label for="expiry">Expiry Date</label>
+          <input id="expiry" name="expiry" type="month" [(ngModel)]="expiry" (ngModelChange)="scheduleSaveDraft()" />
+        </div>
+        <div class="form-group half">
+          <label for="cvv">CVV</label>
+          <input id="cvv" name="cvv" type="password" maxlength="4" placeholder="CVV" [(ngModel)]="cvv" (ngModelChange)="scheduleSaveDraft()" />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="checkout-btn" type="submit">Place Order</button>
+    </div>
+  </form>
+</section>

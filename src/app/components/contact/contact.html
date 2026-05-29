@@ -1,0 +1,77 @@
+<section class="contact-page container">
+	<aside class="contact-sidebar">
+		<div class="help-card quick-connect">
+			<h3>Quick Connect</h3>
+			<p class="muted">Available Mon-Fri, 9AM-5PM</p>
+			<div class="contact-item"><span class="label">Phone</span><div class="value">+92 303 6089 020</div></div>
+			<a class="btn whatsapp full" href="https://wa.me/923036089020" target="_blank">Chat on WhatsApp</a>
+		</div>
+
+		<div class="help-card visit-us">
+			<h3>Visit Us</h3>
+			<p class="muted">River Garden, Gujrat, 44000</p>
+			<p class="small muted">Pakistan Standard Time (GMT +5)</p>
+			<a class="btn outline full" href="#">View on Map</a>
+		</div>
+
+		<div class="help-card follow-us">
+			<h3>Follow Us</h3>
+			<div class="social-icons">
+				<a href="#" aria-label="WhatsApp" class="s">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M21 11.5A8.38 8.38 0 0112.5 20 8.5 8.5 0 013 11.5 8.5 8.5 0 0112.5 3 8.38 8.38 0 0121 11.5z" />
+						<path d="M14.2 13.6c-.3-.1-1.9-1-2-1s-.4-.1-.6.1-.9.9-1.2 1.1-.4.2-.8.1c-.4-.1-1.5-.6-2.8-1.7-1-1-1.1-1.6-.1-2.5L8 9.5c.4-.4.6-.5.9-.4.3.1.9.4 1.2.6s.4.3.5.2.3-.1.7-.1c.4 0 1.2-.2 1.8.7s.8 2.2.4 2.7c-.3.5-.7.6-1 0z" />
+					</svg>
+				</a>
+				<a href="#" aria-label="Facebook" class="s">
+					<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+						<path d="M15 8h2V4h-2c-1.1 0-2 .9-2 2v2H11v3h2v7h3v-7h2l.5-3H16v-1c0-.3.2-.5.5-.5z" />
+					</svg>
+				</a>
+				<a href="#" aria-label="LinkedIn" class="s">
+					<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+						<path d="M4 3a2 2 0 110 4 2 2 0 010-4zm0 7h3v9H4v-9zm5 0h3v1.3c.6-1 2-2.3 4-2.3 3 0 3.5 2 3.5 4.6V19h-3v-4.2c0-1 .1-2.3-1.3-2.3-1.3 0-1.5 1-1.5 2v4.5h-3v-9z" />
+					</svg>
+				</a>
+				<a href="#" aria-label="Twitter" class="s">
+					<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+						<path d="M22 5.9c-.6.3-1.2.5-1.9.6.7-.4 1.2-1 1.5-1.7-.7.5-1.4.8-2.2 1C18.6 4.8 17.7 4.2 16.7 4.2c-1.6 0-2.9 1.4-2.5 3 .2.2-.9 0-1.9-.5-.9-.4-1.9-.8-3-.8-2.3 0-4.1 1.9-4.1 4.2 0 .3 0 .6.1.9C2.9 12 1.8 11.6 1 10.9c-.1 1.1.5 2.2 1.6 2.7-.5 0-1-.1-1.5-.4 0 1.6 1.1 3 2.7 3.3-.5.2-1 .2-1.6.1.5 1.6 2 2.8 3.7 2.8-1.4 1.1-3.2 1.7-5.1 1.7-.3 0-.7 0-1-.1 1.7 1.2 3.8 2 6.1 2 7.3 0 11.3-6.1 11.3-11.4v-.5c.8-.6 1.4-1.3 2-2.1-.7.3-1.4.6-2.2.7z" />
+					</svg>
+				</a>
+				<a href="#" aria-label="Instagram" class="s">
+					<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+						<path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 6a5 5 0 100 10 5 5 0 000-10zm6-3a1 1 0 11-2 0 1 1 0 012 0z" />
+						<circle cx="12" cy="13" r="3" fill="currentColor" />
+					</svg>
+				</a>
+			</div>
+		</div>
+	</aside>
+
+	<main class="contact-main">
+		<section class="contact-form">
+  			<form (submit)="sendWhatsApp($event)">
+				<label>
+					Full Name
+					<input type="text" name="name" [(ngModel)]="model.name" required />
+				</label>
+				<label>
+					Email Address
+					<input type="email" name="email" [(ngModel)]="model.email" required />
+				</label>
+				<label>
+					Phone
+					<input type="tel" name="phone" [(ngModel)]="model.phone" placeholder="e.g. +923001234567" required />
+				</label>
+				<label>
+					Your Message
+					<textarea name="message" [(ngModel)]="model.message" rows="5" required></textarea>
+				</label>
+
+				<div class="actions">
+					<button type="submit" class="btn primary">SEND MESSAGE</button>
+				</div>
+			</form>
+		</section>
+	</main>
+</section>

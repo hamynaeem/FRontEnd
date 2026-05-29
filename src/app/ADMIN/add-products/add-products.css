@@ -1,0 +1,39 @@
+.add-products-container{ max-width:920px; margin:24px auto }
+.product-form{ display:flex; flex-direction:column; gap:14px; background:transparent }
+.product-form h2{ text-align:center; margin:0; font-size:1.3rem }
+.form-group{ display:flex; flex-direction:column; gap:6px }
+.form-row{ display:flex; gap:12px }
+/* specs grid */
+.specs-grid{ display:grid; grid-template-columns:repeat(3,minmax(140px,1fr)); gap:12px; margin-top:6px }
+.specs-grid .form-group{ margin:0 }
+label{ font-weight:600; color:#333 }
+input[type="text"], input[type="number"], textarea, select{ padding:10px 12px; border:1px solid #e6e9ef; border-radius:8px; font-size:0.98rem }
+textarea{ resize:vertical }
+.submit-btn{ margin-top:8px; padding:10px 12px; background:linear-gradient(90deg,#0b74ff,#00b4d8); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:600 }
+.cancel-btn{ background:transparent; border:1px solid #e6e9ef; padding:8px 10px; border-radius:8px; cursor:pointer }
+.existing-products{ margin-top:18px }
+.products-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px }
+.prod{ display:flex; gap:12px; align-items:flex-start; padding:12px; border-radius:10px; background:#fbfdff; border:1px solid #eef3f8 }
+.prod-left img{ width:64px; height:64px; object-fit:cover; border-radius:8px }
+.prod-thumb-placeholder{ width:64px; height:64px; display:flex; align-items:center; justify-content:center; border-radius:8px; background:#fff; color:#6b7280 }
+.prod-mid{ flex:1 }
+.prod-name{ font-weight:700; font-size:1rem }
+.prod-meta{ color:#6b7280; margin-top:6px }
+.prod-desc{ margin-top:8px; color:#4b5563; font-size:0.95rem }
+/* product specs display */
+.prod-specs{ margin-top:8px; display:flex; flex-wrap:wrap; gap:8px }
+.prod-specs .spec{ background:#f3f4f6; color:#111827; padding:6px 8px; border-radius:8px; font-weight:600; font-size:0.88rem }
+.prod-actions{ margin-left:auto; display:flex; gap:8px }
+.icon-btn{ display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:8px; border:1px solid #e6e9ef; background:#fff; cursor:pointer }
+.icon-btn.edit{ color:#0b74ff }
+.icon-btn.delete{ color:#c0392b }
+@media(min-width:700px){ .products-list .prod-actions{ opacity:0; transform:translateX(6px); transition:all .18s } .products-list li:hover .prod-actions{ opacity:1; transform:translateX(0) } }
+/* modal */
+.ap-top{ display:flex; justify-content:flex-end; margin-bottom:12px }
+.ap-add-btn{ background:#0b74ff; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer }
+.ap-modal-backdrop{ position:fixed; inset:0; background:rgba(2,6,23,0.45); display:flex; align-items:center; justify-content:center; z-index:1200 }
+.ap-modal-panel{ width:720px; max-width:96%; background:#fff; border-radius:12px; padding:20px; box-shadow:0 20px 60px rgba(6,22,37,0.35); position:relative }
+.ap-modal-close{ position:absolute; right:12px; top:10px; background:transparent; border:none; font-size:20px; cursor:pointer }
+.error{ color:#c0392b; margin-top:6px }
+
+@media(max-width:700px){ .form-row{ flex-direction:column } .prod-left img, .prod-thumb-placeholder{ width:56px; height:56px } }

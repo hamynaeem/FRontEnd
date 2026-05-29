@@ -1,0 +1,124 @@
+<div class="orders-page">
+	<div class="orders-top">
+		<div>
+			<h1>Orders</h1>
+			<p class="muted">Manage recent orders, update statuses and review details.</p>
+		</div>
+
+		<div class="controls">
+			<input type="search" placeholder="Search orders, customer, product..." [(ngModel)]="searchTerm" />
+			<select [(ngModel)]="statusFilter">
+				<option value="all">All statuses</option>
+				<option value="pending">Pending</option>
+				<option value="processing">Processing</option>
+				<option value="shipped">Shipped</option>
+				<option value="delivered">Delivered</option>
+				<option value="cancelled">Cancelled</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="orders-stats">
+		<div class="stat-card">
+			<div class="stat-label">Total Orders</div>
+			<div class="stat-value">{{ orders.length }}</div>
+		</div>
+		<div class="stat-card">
+			<div class="stat-label">Pending</div>
+			<div class="stat-value">{{ orders.filter(o=>o.status==='pending').length }}</div>
+		</div>
+		<div class="stat-card">
+			<div class="stat-label">Shipped</div>
+			<div class="stat-value">{{ orders.filter(o=>o.status==='shipped').length }}</div>
+		</div>
+		<div class="stat-card">
+			<div class="stat-label">Revenue</div>
+			<div class="stat-value">{{ orders.reduce((s,o)=>s+o.total,0) | currency }}</div>
+		</div>
+	</div>
+
+	<div class="orders-list">
+		<table class="orders-table" *ngIf="filteredOrders.length>0">
+			<thead>
+				<tr>
+					<th>Order</th>
+					<th>Date</th>
+					<th>Customer</th>
+					<th>Items</th>
+					<th>Total</th>
+					<th>Status</th>
+					<th class="actions">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let o of filteredOrders">
+					<td class="mono">{{ o.orderNo }}</td>
+					<td>{{ formatDate(o.date) }}</td>
+					<td>{{ o.customer?.name }}</td>
+					<td>{{ orderItemCount(o) }}</td>
+					<td>{{ o.total | currency }}</td>
+					<td><span class="badge" [class.pending]="o.status==='pending'" [class.processing]="o.status==='processing'" [class.shipped]="o.status==='shipped'" [class.delivered]="o.status==='delivered'" [class.cancelled]="o.status==='cancelled'">{{ o.status }}</span></td>
+					<td class="actions">
+						<button class="btn" (click)="openDetails(o)">View</button>
+						<button class="btn ghost" *ngIf="o.status!=='shipped'" (click)="markStatus(o,'shipped')">Mark Shipped</button>
+						<button class="btn danger" (click)="deleteOrder(o)">Delete</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div *ngIf="filteredOrders.length===0" class="no-results">No orders found.</div>
+	</div>
+
+	<!-- Order details modal -->
+	<div *ngIf="showModal && selectedOrder" class="orders-modal-backdrop" (click)="closeDetails()">
+		<div class="orders-modal" (click)="$event.stopPropagation()">
+			<button class="modal-close" (click)="closeDetails()">×</button>
+			<h3>Order {{ selectedOrder.orderNo }}</h3>
+			<div class="modal-grid">
+				<div class="left">
+					<div class="section">
+						<div class="section-title">Customer</div>
+						<div>{{ selectedOrder.customer.name }}</div>
+						<div class="muted">{{ selectedOrder.customer.email }} • {{ selectedOrder.customer.phone }}</div>
+						<div class="muted">{{ selectedOrder.customer.address }}</div>
+					</div>
+
+					<div class="section">
+						<div class="section-title">Items</div>
+						<ul class="order-items">
+							<li *ngFor="let it of selectedOrder.items">
+								<div class="item-name">{{ it.name }}</div>
+								<div class="item-meta">{{ it.qty }} × {{ it.price | currency }} = {{ (it.qty*it.price) | currency }}</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="right">
+					<div class="section">
+						<div class="section-title">Summary</div>
+						<div class="summary-row"><span>Subtotal</span><span>{{ orderSubtotal(selectedOrder) | currency }}</span></div>
+						<div class="summary-row"><span>Shipping</span><span>{{ selectedOrder.shippingMethod || 'Standard' }}</span></div>
+						<div class="summary-row total"><span>Total</span><span>{{ selectedOrder.total | currency }}</span></div>
+					</div>
+
+					<div class="section">
+						<div class="section-title">Payment & Shipping</div>
+						<div>Payment: {{ selectedOrder.paymentMethod }}</div>
+						<div>Shipping: {{ selectedOrder.shippingMethod }}</div>
+					</div>
+
+					<div class="section">
+						<div class="section-title">Actions</div>
+						<div class="modal-actions">
+							<button class="btn" (click)="markStatus(selectedOrder,'processing')">Mark Processing</button>
+							<button class="btn" (click)="markStatus(selectedOrder,'shipped')">Mark Shipped</button>
+							<button class="btn danger" (click)="deleteOrder(selectedOrder)">Delete</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,49 @@
+/* Order history styles */
+.history { padding: 36px 12px; max-width: var(--container); margin: 0 auto; }
+.page-title { font-size: 1.6rem; margin-bottom: 18px; font-weight: 800; color: var(--text) }
+
+.empty { text-align: center; padding: 36px; background: var(--card); border-radius: 12px; }
+.empty p { color: var(--muted); margin-bottom: 12px }
+
+.orders-list { display: flex; flex-direction: column; gap: 18px }
+.order-card { background: var(--card); border-radius: 14px; box-shadow: 0 18px 48px rgba(2,6,23,0.06); overflow: hidden }
+.order-head { display:flex; justify-content:space-between; align-items:center; padding:18px 20px; border-bottom:1px solid rgba(2,6,23,0.04) }
+.order-head .left { display:flex; flex-direction:column; gap:4px }
+.order-id { color: var(--muted); font-size:0.95rem }
+.order-date { color: var(--muted); font-size:0.85rem }
+.order-total { font-weight:800; font-size:1.05rem; color:var(--primary) }
+.order-status { padding:6px 10px; border-radius:999px; font-weight:700; font-size:0.85rem; color:#fff }
+.order-status.status-placed { background: linear-gradient(90deg,#06b6d4,#0ea5a5) }
+.order-status.status-processing { background: linear-gradient(90deg,#f59e0b,#f97316) }
+.order-status.status-shipped { background: linear-gradient(90deg,#60a5fa,#2563eb) }
+.order-status.status-out_for_delivery { background: linear-gradient(90deg,#34d399,#10b981) }
+.order-status.status-delivered { background: linear-gradient(90deg,#10b981,#059669) }
+
+.order-body { padding:18px 20px }
+.items-preview { display:flex; gap:12px; align-items:center; flex-wrap:wrap }
+.items-preview .item { display:flex; gap:12px; align-items:center; width:280px; background:rgba(255,255,255,0.02); padding:8px; border-radius:10px }
+.items-preview img { width:64px; height:64px; object-fit:cover; border-radius:8px }
+.items-preview .title { font-weight:700 }
+.items-preview .qty { color:var(--muted); font-size:0.95rem }
+
+.order-actions { margin-top:12px; display:flex; gap:10px }
+.order-details { margin-top:14px }
+.details-grid { display:grid; grid-template-columns:1fr 360px; gap:18px }
+.address-card { padding:12px; background:rgba(255,255,255,0.02); border-radius:10px }
+.address-card h4 { margin:0 0 8px }
+.addr-name { font-weight:800 }
+.addr-line, .addr-phone { color:var(--muted); margin-top:6px }
+
+.tracking h4 { margin:0 0 10px }
+.timeline { list-style:none; margin:0; padding:0 }
+.timeline li { display:flex; justify-content:space-between; align-items:center; padding:10px 12px; border-radius:8px; margin-bottom:8px; background:rgba(255,255,255,0.02) }
+.timeline li.active { background: linear-gradient(90deg, rgba(37,99,235,0.06), rgba(16,185,129,0.02)) }
+.step-label { font-weight:700 }
+.step-time { color:var(--muted); font-size:0.9rem }
+
+@media(max-width:900px){
+	.details-grid { grid-template-columns: 1fr }
+	.items-preview .item { width: 100% }
+	.order-head { flex-direction: column; align-items:flex-start; gap:8px }
+}
+

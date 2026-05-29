@@ -1,0 +1,17 @@
+<div class="admin-login-container">
+	<form (submit)="login($event, username.value, password.value)" class="admin-login-form">
+		<h2>Admin Login</h2>
+		<div class="field">
+			<label for="username">Username</label>
+			<input id="username" name="username" type="text" #username autocomplete="username" required />
+		</div>
+		<div class="field">
+			<label for="password">Password</label>
+			<input id="password" name="password" type="password" #password autocomplete="current-password" required />
+		</div>
+		<div class="actions">
+			<button type="submit">Login</button>
+		</div>
+	</form>
+	<p class="error" [hidden]="!error">{{error}}</p>
+</div>

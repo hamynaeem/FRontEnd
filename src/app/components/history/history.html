@@ -1,0 +1,64 @@
+<section class="history container">
+	<h2 class="page-title">Order History</h2>
+
+	<div *ngIf="orders.length === 0" class="empty">
+		<p>You have no orders yet. Place an order from the store to see it here.</p>
+		<a routerLink="/Store" class="btn primary">Browse Store</a>
+	</div>
+
+	<div *ngIf="orders.length > 0" class="orders-list">
+		<div class="order-card" *ngFor="let o of orders">
+			<div class="order-head">
+				<div class="left">
+					<div class="order-id">Order <strong>{{ o.id }}</strong></div>
+					<div class="order-date">{{ o.createdAt | date:'medium' }}</div>
+				</div>
+				<div class="right">
+					<div class="order-total">{{ formatPrice(o.total) }}</div>
+					<div class="order-status status-{{ o.status }}">{{ stepLabel(o.status) }}</div>
+				</div>
+			</div>
+
+			<div class="order-body">
+				<div class="items-preview">
+					<div class="item" *ngFor="let it of o.items">
+						<img [src]="it.image" alt="{{ it.title }}" />
+						<div class="meta">
+							<div class="title">{{ it.title }}</div>
+							<div class="qty">{{ it.qty }} × {{ formatPrice(it.price || 0) }}</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="order-actions">
+					<button class="btn" type="button" (click)="reorder(o)">Reorder</button>
+					<button class="btn secondary" type="button" (click)="toggle(o.id)">
+						{{ expanded[o.id] ? 'Hide details' : 'View details' }}
+					</button>
+				</div>
+
+				<div class="order-details" *ngIf="expanded[o.id]">
+					<div class="details-grid">
+						<div class="address-card">
+							<h4>Delivery Address</h4>
+							<div class="addr-name">{{ o.address?.name }}</div>
+							<div class="addr-line">{{ o.address?.address }}</div>
+							<div class="addr-line">{{ o.address?.city }} {{ o.address?.province }} {{ o.address?.country }}</div>
+							<div class="addr-phone">{{ o.address?.phone }}</div>
+						</div>
+
+						<div class="tracking">
+							<h4>Tracking</h4>
+							<ul class="timeline">
+								<li *ngFor="let step of ['placed','processing','shipped','out_for_delivery','delivered']" [class.active]="isStepActive(o, step)">
+									<div class="step-label">{{ stepLabel(step) }}</div>
+									<div class="step-time">{{ getStepDate(o, step) }}</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

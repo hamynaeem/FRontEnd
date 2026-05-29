@@ -1,0 +1,182 @@
+<!-- Page-level Add button (opens modal when used as a page) -->
+<div *ngIf="showAddButton" class="ap-top">
+	<button class="ap-add-btn" (click)="showModal = true">+ Add Product</button>
+</div>
+
+<!-- Inline form (used when embedded in another component) -->
+<form *ngIf="!showAddButton" class="product-form" (submit)="save($event)">
+	<h2>{{ editingId ? 'Edit Product' : 'Add New Product' }}</h2>
+
+	<div class="form-group">
+		<label for="pname">Product Name</label>
+		<input id="pname" name="pname" type="text" [(ngModel)]="model.name" required placeholder="Enter product name" />
+	</div>
+
+	<div class="form-row">
+		<div class="form-group">
+			<label for="pprice">Price</label>
+			<input id="pprice" name="pprice" type="number" step="0.01" min="0" [(ngModel)]="model.price" required />
+		</div>
+		<div class="form-group">
+			<label for="pcat">Category</label>
+			<select id="pcat" name="pcat" [(ngModel)]="model.category">
+				<option value="">-- none --</option>
+				<option *ngFor="let c of categories" [value]="c.name">{{c.name}}</option>
+			</select>
+		</div>
+	</div>
+
+	<!-- Mobile specs grid -->
+	<div class="specs-grid">
+		<div class="form-group">
+			<label for="pram">RAM</label>
+			<input id="pram" name="pram" type="text" [(ngModel)]="model.specs.ram" placeholder="e.g. 8GB" />
+		</div>
+		<div class="form-group">
+			<label for="prom">ROM</label>
+			<input id="prom" name="prom" type="text" [(ngModel)]="model.specs.rom" placeholder="e.g. 128GB" />
+		</div>
+		<div class="form-group">
+			<label for="pbatt">Battery</label>
+			<input id="pbatt" name="pbatt" type="text" [(ngModel)]="model.specs.battery" placeholder="e.g. 5000mAh" />
+		</div>
+		<div class="form-group">
+			<label for="pdisp">Display</label>
+			<input id="pdisp" name="pdisp" type="text" [(ngModel)]="model.specs.display" placeholder="e.g. 6.5&quot; FHD+" />
+		</div>
+		<div class="form-group">
+			<label for="pcam">Camera</label>
+			<input id="pcam" name="pcam" type="text" [(ngModel)]="model.specs.camera" placeholder="e.g. 64MP + 12MP" />
+		</div>
+		<div class="form-group">
+			<label for="pproc">Processor</label>
+			<input id="pproc" name="pproc" type="text" [(ngModel)]="model.specs.processor" placeholder="e.g. Snapdragon 8xx" />
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="pdesc">Description</label>
+		<textarea id="pdesc" name="pdesc" rows="3" [(ngModel)]="model.description" placeholder="Short description (optional)"></textarea>
+	</div>
+
+	<div class="form-group">
+		<label for="pimg">Image URL</label>
+		<input id="pimg" name="pimg" type="text" [(ngModel)]="model.image" placeholder="Optional image URL" />
+	</div>
+
+	<div class="form-actions">
+		<button class="submit-btn" type="submit">{{ editingId ? 'Update' : 'Save' }}</button>
+		<button *ngIf="editingId" type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+	</div>
+
+	<div class="error" *ngIf="error">{{error}}</div>
+</form>
+
+<!-- Saved products list -->
+<section class="existing-products">
+	<h3>Saved Products</h3>
+	<div *ngIf="products.length === 0">No products yet.</div>
+	<ul *ngIf="products.length > 0" class="products-list">
+		<li *ngFor="let p of products">
+			<div class="prod">
+				<div class="prod-left">
+					<img *ngIf="p.image" [src]="p.image" alt="{{p.name}}" />
+					<div *ngIf="!p.image" class="prod-thumb-placeholder">📦</div>
+				</div>
+				<div class="prod-mid">
+					<div class="prod-name">{{p.name}}</div>
+					<div class="prod-meta"><span class="price">${{p.price}}</span>
+						<span class="category" *ngIf="p.category"> • {{p.category}}</span>
+					</div>
+					<div class="prod-desc" *ngIf="p.description">{{p.description}}</div>
+					<div class="prod-specs" *ngIf="p.specs">
+						<span class="spec" *ngIf="p.specs.ram">RAM: {{p.specs.ram}}</span>
+						<span class="spec" *ngIf="p.specs.rom">ROM: {{p.specs.rom}}</span>
+						<span class="spec" *ngIf="p.specs.battery">Battery: {{p.specs.battery}}</span>
+						<span class="spec" *ngIf="p.specs.display">Display: {{p.specs.display}}</span>
+						<span class="spec" *ngIf="p.specs.camera">Camera: {{p.specs.camera}}</span>
+						<span class="spec" *ngIf="p.specs.processor">CPU: {{p.specs.processor}}</span>
+					</div>
+				</div>
+				<div class="prod-actions">
+					<button class="icon-btn edit" aria-label="Edit product" (click)="$event.stopPropagation(); edit(p)">✏️</button>
+					<button class="icon-btn delete" aria-label="Delete product" (click)="$event.stopPropagation(); remove(p.id)">🗑️</button>
+				</div>
+			</div>
+		</li>
+	</ul>
+</section>
+
+<!-- Modal for page-level add/edit -->
+<div *ngIf="showModal" class="ap-modal-backdrop" (click)="showModal = false">
+	<div class="ap-modal-panel" (click)="$event.stopPropagation()">
+		<button class="ap-modal-close" aria-label="Close" (click)="showModal = false">×</button>
+		<form class="product-form" (submit)="save($event)">
+			<h2>{{ editingId ? 'Edit Product' : 'Add New Product' }}</h2>
+
+			<div class="form-group">
+				<label for="pname2">Product Name</label>
+				<input id="pname2" name="pname2" type="text" [(ngModel)]="model.name" required placeholder="Enter product name" />
+			</div>
+
+			<div class="form-row">
+				<div class="form-group">
+					<label for="pprice2">Price</label>
+					<input id="pprice2" name="pprice2" type="number" step="0.01" min="0" [(ngModel)]="model.price" required />
+				</div>
+				<div class="form-group">
+					<label for="pcat2">Category</label>
+					<select id="pcat2" name="pcat2" [(ngModel)]="model.category">
+						<option value="">-- none --</option>
+						<option *ngFor="let c of categories" [value]="c.name">{{c.name}}</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- Modal specs -->
+			<div class="specs-grid">
+				<div class="form-group">
+					<label for="pram2">RAM</label>
+					<input id="pram2" name="pram2" type="text" [(ngModel)]="model.specs.ram" placeholder="e.g. 8GB" />
+				</div>
+				<div class="form-group">
+					<label for="prom2">ROM</label>
+					<input id="prom2" name="prom2" type="text" [(ngModel)]="model.specs.rom" placeholder="e.g. 128GB" />
+				</div>
+				<div class="form-group">
+					<label for="pbatt2">Battery</label>
+					<input id="pbatt2" name="pbatt2" type="text" [(ngModel)]="model.specs.battery" placeholder="e.g. 5000mAh" />
+				</div>
+				<div class="form-group">
+					<label for="pdisp2">Display</label>
+					<input id="pdisp2" name="pdisp2" type="text" [(ngModel)]="model.specs.display" placeholder="e.g. 6.5&quot; FHD+" />
+				</div>
+				<div class="form-group">
+					<label for="pcam2">Camera</label>
+					<input id="pcam2" name="pcam2" type="text" [(ngModel)]="model.specs.camera" placeholder="e.g. 64MP + 12MP" />
+				</div>
+				<div class="form-group">
+					<label for="pproc2">Processor</label>
+					<input id="pproc2" name="pproc2" type="text" [(ngModel)]="model.specs.processor" placeholder="e.g. Snapdragon 8xx" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="pdesc2">Description</label>
+				<textarea id="pdesc2" name="pdesc2" rows="3" [(ngModel)]="model.description" placeholder="Short description (optional)"></textarea>
+			</div>
+
+			<div class="form-group">
+				<label for="pimg2">Image URL</label>
+				<input id="pimg2" name="pimg2" type="text" [(ngModel)]="model.image" placeholder="Optional image URL" />
+			</div>
+
+			<div class="form-actions">
+				<button class="submit-btn" type="submit">{{ editingId ? 'Update' : 'Save' }}</button>
+				<button *ngIf="editingId" type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+			</div>
+
+			<div class="error" *ngIf="error">{{error}}</div>
+		</form>
+	</div>
+</div>

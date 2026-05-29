@@ -1,0 +1,331 @@
+/* Redesigned contact page to match the pastel glass UI from the screenshot */
+
+.contact-page {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 28px;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 64px;
+  box-sizing: border-box;
+  /* soft pastel multi-stop background */
+  background: radial-gradient(circle at 10% 20%, #fef1ff 0%, rgba(254, 241, 255, 0.25) 12%, transparent 30%),
+    radial-gradient(circle at 90% 80%, #fef9e6 0%, rgba(255, 249, 196, 0.28) 12%, transparent 30%),
+    linear-gradient(135deg, #ffd7c7 0%, #fbe8ff 45%, #fff9d6 100%);
+  overflow: hidden;
+}
+
+/* Ensure this page ignores the global .container max-width so it can use full viewport */
+.contact-page.container {
+  /* force full-bleed layout for this page */
+  max-width: none !important;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding-left: 64px;
+  /* preserve horizontal gutters */
+  padding-right: 64px;
+  padding-top: 100px;
+  /* avoid header overlap */
+  padding-bottom: 80px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* decorative concentric circle near top center */
+.contact-page::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 18px 60px rgba(250, 200, 200, 0.06);
+  backdrop-filter: blur(8px) saturate(130%);
+  z-index: 1;
+}
+
+/* small floating dots */
+.contact-page::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  top: 60%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 1200px -400px 0 2px rgba(255, 255, 255, 0.45), 600px -200px 0 1px rgba(255, 255, 255, 0.35);
+  opacity: 0.7;
+  filter: blur(2px);
+  z-index: 0;
+}
+
+/* Sidebar stacked small cards */
+.contact-sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.help-card {
+  background: rgba(255, 255, 255, 0.42);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 14px 40px rgba(16, 24, 40, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px) saturate(130%);
+  z-index: 2;
+}
+
+.help-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.05rem
+}
+
+.help-card .muted {
+  color: rgba(12, 18, 30, 0.45);
+  margin: 6px 0
+}
+
+.help-card .small {
+  font-size: 13px
+}
+
+.help-card .contact-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0
+}
+
+.help-card .contact-item .label {
+  color: rgba(12, 18, 30, 0.55);
+  font-weight: 700;
+  font-size: 13px
+}
+
+.help-card .contact-item .value {
+  font-weight: 700
+}
+
+/* Follow Us icons styling */
+.help-card.follow-us h3 {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+  padding-top: 6px;
+}
+
+.social-icons .s {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  color: rgba(12, 18, 30, 0.75);
+  position: relative;
+  transition: transform .18s ease, box-shadow .18s ease;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 16px rgba(12, 18, 30, 0.06);
+  text-decoration: none;
+}
+
+.social-icons .s svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.social-icons .s::after {
+  content: '';
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+a.s[aria-label="WhatsApp"] {
+  background: linear-gradient(180deg, #e6fbef, #d7f6e6);
+  color: #054d33;
+  border-color: rgba(34, 197, 94, 0.12);
+}
+
+a.s[aria-label="Facebook"] {
+  background: linear-gradient(180deg, #eaf4ff, #d7eaff);
+  color: #0b3f83;
+  border-color: rgba(59, 130, 246, 0.12);
+}
+
+a.s[aria-label="LinkedIn"] {
+  background: linear-gradient(180deg, #f0fbff, #dbf5ff);
+  color: #0b6b8f;
+  border-color: rgba(14, 165, 233, 0.12);
+}
+
+a.s[aria-label="Twitter"] {
+  background: linear-gradient(180deg, #e9f6ff, #d9f0ff);
+  color: #0b5ea9;
+  border-color: rgba(56, 189, 248, 0.12);
+}
+
+a.s[aria-label="Instagram"] {
+  background: linear-gradient(180deg, #fff0f7, #ffe7ef);
+  color: #9b3b5e;
+  border-color: rgba(236, 72, 153, 0.12);
+}
+
+.social-icons .s:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 36px rgba(12, 18, 30, 0.12);
+}
+
+.social-icons .s:focus {
+  outline: 3px solid rgba(37, 211, 102, 0.14);
+  outline-offset: 3px;
+}
+
+.btn.full {
+  display: block;
+  width: 100%;
+  text-align: center
+}
+
+.btn {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  background: transparent
+}
+
+.btn.whatsapp {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: #fff;
+  border: none
+}
+
+.btn.outline {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.06)
+}
+
+/* Main contact form large frosted card */
+.contact-form {
+  background: rgba(255, 255, 255, 0.44);
+  border-radius: 18px;
+  padding: 36px;
+  box-shadow: 0 26px 80px rgba(16, 24, 40, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px) saturate(140%);
+  z-index: 2;
+  position: relative;
+  overflow: visible;
+}
+
+.decor-circle {
+  position: absolute;
+  left: 50%;
+  top: -46px;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  border: 6px solid rgba(255, 255, 255, 0.4);
+}
+
+.contact-form h2 {
+  text-align: center;
+  margin-top: 18px;
+  margin-bottom: 18px;
+  font-size: 1.05rem
+}
+
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px
+}
+
+.contact-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 600;
+  color: rgba(12, 18, 30, 0.8)
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  font-size: 14px;
+}
+
+.actions {
+  margin-top: 12px
+}
+
+.actions .btn.primary {
+  width: 100%;
+  padding: 14px;
+  border-radius: 28px;
+  background: linear-gradient(90deg, #2563eb, #06b6d4);
+  color: #fff;
+  border: none;
+  font-weight: 700
+}
+
+/* small screens */
+@media(max-width:1000px) {
+  .contact-page {
+    grid-template-columns: 1fr;
+    padding: 28px 20px
+  }
+
+  .contact-sidebar {
+    order: 2
+  }
+
+  .contact-main {
+    order: 1
+  }
+
+  .contact-form {
+    padding: 20px
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .contact-page::before,
+  .contact-page::after {
+    animation: none
+  }
+}

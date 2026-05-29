@@ -1,0 +1,46 @@
+.overview-root{ padding:18px 20px; display:flex; flex-direction:column; gap:18px }
+.notice{ background:#fff3f2; color:#7a2a2a; padding:10px 14px; border-radius:8px; font-size:13px }
+
+.overview-top{ display:flex; gap:18px }
+.summary-cards{ display:grid; grid-template-columns: repeat(1,1fr); gap:12px; width:480px }
+.info-card{ display:flex; gap:12px; align-items:center; background:#fff; padding:14px; border-radius:10px; box-shadow: 0 6px 24px rgba(12,20,30,0.06) }
+.info-left .icon{ font-size:26px; background:linear-gradient(90deg,#fff,#f3f6fb); padding:10px; border-radius:8px }
+.info-right .small{ color:#6b7280; font-size:13px }
+.info-right .big{ font-weight:700; font-size:20px; margin-top:6px }
+.info-right .meta{ color:#9ca3af; font-size:12px; margin-top:6px }
+
+.performance-card{ flex:1; background:#fff; border-radius:12px; padding:16px; box-shadow: 0 6px 24px rgba(12,20,30,0.06); display:flex; flex-direction:column }
+.perf-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px }
+.perf-chart{ flex:1; display:flex; align-items:flex-end }
+.bars{ display:flex; gap:6px; align-items:end; height:140px }
+.bars .bar{ width:18px; background: linear-gradient(180deg,#ff7a18,#ffb86b); border-radius:6px }
+
+.overview-mid{ display:grid; grid-template-columns: 1fr 1fr 360px; gap:14px }
+.card{ background:#fff; padding:14px; border-radius:12px; box-shadow: 0 6px 24px rgba(12,20,30,0.04) }
+.donut-wrap{ display:flex; align-items:center; gap:14px }
+.donut{ width:84px; height:84px }
+.donut-ring{ fill: none; stroke: #eee; stroke-width:3.5 }
+.donut-segment{ fill: none; stroke: #ff7a18; stroke-width:3.5; stroke-linecap:round }
+.donut-text{ font-weight:700 }
+
+.map-placeholder{ height:130px; background: linear-gradient(90deg,#f3f6fb,#fff); border-radius:8px; display:flex; align-items:center; justify-content:center; color:#6b7280 }
+.map-stats{ margin-top:8px; display:flex; gap:16px; color:#6b7280 }
+
+.top-pages table{ width:100%; border-collapse:collapse }
+.top-pages th{ text-align:left; font-size:13px; color:#6b7280; padding-bottom:8px }
+.top-pages td{ padding:8px 0 }
+
+.recent-orders .ro-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px }
+.create{ background:#fff; border:1px solid #e6e9ef; padding:6px 10px; border-radius:8px }
+.orders-table{ width:100%; border-collapse:collapse }
+.orders-table th{ text-align:left; color:#6b7280; font-size:13px; padding-bottom:8px }
+.orders-table td{ padding:10px 0; border-top:1px solid #f0f3f7 }
+
+@media (max-width:1100px){
+  .overview-mid{ grid-template-columns: 1fr 1fr 1fr }
+}
+@media (max-width:800px){
+  .overview-top{ flex-direction:column }
+  .summary-cards{ width:100% }
+  .overview-mid{ grid-template-columns: 1fr }
+}
