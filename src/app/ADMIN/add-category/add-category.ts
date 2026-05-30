@@ -1,15 +1,9 @@
 
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { SnackbarService } from '../../shared/snackbar.service';
+import { SnackbarService } from '../../components/shared/snackbar.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface Category {
-  id: number;
-  name: string;
-  icon?: string;
-  parent?: string;
-}
+import { CategoryService, Category } from '../../components/services/category.service';
 
 @Component({
   selector: 'app-add-category',
@@ -27,19 +21,25 @@ export class AddCategory implements OnInit {
   editingId: number | null = null;
   error = '';
 
-  constructor(private snackbar: SnackbarService){}
+  constructor(
+    private snackbar: SnackbarService,
+    private categoryService: CategoryService
+  ){}
 
   ngOnInit(): void {
     this.loadCategories();
   }
 
   private loadCategories(){
-    try{
-      const raw = localStorage.getItem('categories');
-      this.categories = raw ? JSON.parse(raw) : [];
-    }catch{
-      this.categories = [];
-    }
+    this.categoryService.getCategories().subscribe({
+      next: (data) => {
+        this.categories = data;
+      },
+      error: (err) => {
+        console.error(err);
+        this.error = 'Failed to load categories';
+      }
+    });
   }
 
   save(ev: Event){
@@ -51,41 +51,58 @@ export class AddCategory implements OnInit {
       return;
     }
 
+    const payload = {
+      name,
+      icon: (this.model.icon || '').trim() || undefined,
+      parent: (this.model.parent || '').trim() || undefined
+    };
+
     if (this.editingId) {
-      // update existing
-      const idx = this.categories.findIndex(c => c.id === this.editingId);
-      if (idx > -1) {
-        this.categories[idx] = {
-          id: this.editingId,
-          name,
-          icon: (this.model.icon || '').trim(),
-          parent: (this.model.parent || '').trim() || undefined
-        };
-        localStorage.setItem('categories', JSON.stringify(this.categories));
-        try{ this.saved.emit({ action: 'updated', item: this.categories[idx] }); }catch{}
-      }
-      this.editingId = null;
-      this.snackbar.show('Category updated', { type: 'success', duration: 2500 });
+      const idToUpdate = this.editingId;
+      this.categoryService.updateCategory(idToUpdate, payload).subscribe({
+        next: (updatedCat) => {
+          const idx = this.categories.findIndex(c => c.id === idToUpdate);
+          if (idx > -1) {
+            this.categories[idx] = updatedCat;
+            try { this.saved.emit({ action: 'updated', item: updatedCat }); } catch {}
+          }
+          this.snackbar.show('Category updated', { type: 'success', duration: 2500 });
+          this.cancelEdit();
+        },
+        error: (err) => {
+          console.error(err);
+          this.error = 'Failed to update category';
+        }
+      });
     } else {
-      const cat: Category = {
-        id: Date.now(),
-        name,
-        icon: (this.model.icon || '').trim(),
-        parent: (this.model.parent || '').trim() || undefined
-      };
-      this.categories.unshift(cat);
-      localStorage.setItem('categories', JSON.stringify(this.categories));
-      try{ this.saved.emit(cat); }catch{}
-      // show snackbar with undo
-      const added = cat;
-      this.snackbar.show('Category added', { type: 'success', duration: 4000, actionText: 'Undo', action: () => { this.remove(added.id, true); this.snackbar.show('Add undone', { duration: 2200, type: 'info' }); } });
+      this.categoryService.createCategory(payload).subscribe({
+        next: (newCat) => {
+          this.categories.unshift(newCat);
+          try { this.saved.emit(newCat); } catch {}
+          
+          // show snackbar with undo
+          this.snackbar.show('Category added', {
+            type: 'success',
+            duration: 4000,
+            actionText: 'Undo',
+            action: () => {
+              this.remove(newCat.id, true);
+              this.snackbar.show('Add undone', { duration: 2200, type: 'info' });
+            }
+          });
+
+          // close modal if shown via page button
+          if (this.showAddButton) this.showModal = false;
+
+          // reset form
+          this.model = { name: '', icon: '', parent: '' };
+        },
+        error: (err) => {
+          console.error(err);
+          this.error = 'Failed to add category';
+        }
+      });
     }
-
-    // close modal if shown via page button
-    if (this.showAddButton) this.showModal = false;
-
-    // reset form
-    this.model = { name: '', icon: '', parent: '' };
   }
 
   remove(id: number, skipConfirm = false){
@@ -93,11 +110,38 @@ export class AddCategory implements OnInit {
       if (!confirm('Delete this category?')) return;
     }
     const removed = this.categories.find(c => c.id === id);
-    this.categories = this.categories.filter(c => c.id !== id);
-    localStorage.setItem('categories', JSON.stringify(this.categories));
-    if (removed) {
-      this.snackbar.show('Category deleted', { duration: 4000, actionText: 'Undo', action: () => { this.categories.unshift(removed); localStorage.setItem('categories', JSON.stringify(this.categories)); this.snackbar.show('Restore successful', { duration: 2200, type: 'success' }); } });
-    }
+    if (!removed) return;
+
+    this.categoryService.deleteCategory(id).subscribe({
+      next: () => {
+        this.categories = this.categories.filter(c => c.id !== id);
+        this.snackbar.show('Category deleted', {
+          duration: 4000,
+          actionText: 'Undo',
+          action: () => {
+            const payload = {
+              name: removed.name,
+              icon: removed.icon || undefined,
+              parent: removed.parent || undefined
+            };
+            this.categoryService.createCategory(payload).subscribe({
+              next: (restoredCat) => {
+                this.categories.unshift(restoredCat);
+                this.snackbar.show('Restore successful', { duration: 2200, type: 'success' });
+              },
+              error: (err) => {
+                console.error(err);
+                this.snackbar.show('Failed to restore category', { duration: 2200, type: 'error' });
+              }
+            });
+          }
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        this.snackbar.show('Failed to delete category', { duration: 2200, type: 'error' });
+      }
+    });
   }
 
   edit(c: Category){

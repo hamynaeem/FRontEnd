@@ -2,9 +2,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
-import { OrderService, Order, OrderStatus } from '../../services/order.service';
-import { CartService } from '../../services/cart.service';
-import { SnackbarService } from '../../shared/snackbar.service';
+import { OrderService, Order, OrderStatus } from '../services/order.service';
+import { CartService } from '../services/cart.service';
+import { SnackbarService } from '../shared/snackbar.service';
 
 @Component({
   selector: 'app-history',

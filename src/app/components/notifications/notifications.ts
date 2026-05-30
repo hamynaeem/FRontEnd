@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { OrderService } from '../../services/order.service';
-import { SnackbarService } from '../../shared/snackbar.service';
+import { OrderService } from '../services/order.service';
+import { SnackbarService } from '../shared/snackbar.service';
+
 
 @Component({
   selector: 'app-notifications',

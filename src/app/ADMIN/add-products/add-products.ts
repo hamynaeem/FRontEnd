@@ -2,7 +2,8 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SnackbarService } from '../../shared/snackbar.service';
+import { SnackbarService } from '../../components/shared/snackbar.service';
+import { CategoryService } from '../../components/services/category.service';
 
 interface Product {
   id: number;
@@ -38,7 +39,10 @@ export class AddProducts implements OnInit {
   error = '';
   categories: any[] = [];
 
-  constructor(private snackbar: SnackbarService) {}
+  constructor(
+    private snackbar: SnackbarService,
+    private categoryService: CategoryService
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -55,12 +59,15 @@ export class AddProducts implements OnInit {
   }
 
   private loadCategories(){
-    try{
-      const raw = localStorage.getItem('categories');
-      this.categories = raw ? JSON.parse(raw) : [];
-    }catch{
-      this.categories = [];
-    }
+    this.categoryService.getCategories().subscribe({
+      next: (data) => {
+        this.categories = data;
+      },
+      error: (err) => {
+        console.error(err);
+        this.categories = [];
+      }
+    });
   }
 
   save(ev: Event){

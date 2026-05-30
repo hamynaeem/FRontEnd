@@ -1,11 +1,11 @@
 import { Component, signal, OnDestroy } from '@angular/core';
 import { Router, RouterLink, RouterOutlet, NavigationEnd } from '@angular/router';
-import { SnackbarComponent } from './shared/snackbar/snackbar.component';
+import { SnackbarComponent } from './components/shared/snackbar/snackbar.component';
 import { NgIf } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { CartService } from './services/cart.service';
-import { SnackbarService } from './shared/snackbar.service';
+import { CartService } from './components/services/cart.service';
+import { SnackbarService } from './components/shared/snackbar.service';
 
 @Component({
   selector: 'app-root',

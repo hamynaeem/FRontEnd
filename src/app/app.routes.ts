@@ -43,7 +43,7 @@ export const routes: Routes = [
     },
     {
       path: 'checkout',
-      loadComponent: () => import('./checkout/checkout').then(m => m.Checkout)
+      loadComponent: () => import('./components/checkout/checkout').then(m => m.Checkout)
     },
     {
       path: 'category/:smartwatches',
@@ -51,7 +51,7 @@ export const routes: Routes = [
     },
     {
       path: 'smartphones',
-      loadComponent: () => import('./smartphones/smartphones').then(m => m.Smartphones)
+      loadComponent: () => import('./components/smartphones/smartphones').then(m => m.Smartphones)
     },
     {
       path: 'track',

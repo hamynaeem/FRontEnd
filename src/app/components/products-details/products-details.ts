@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { CartService } from '../../services/cart.service';
-import { SnackbarService } from '../../shared/snackbar.service';
+import { CartService } from '../services/cart.service';
+import { SnackbarService } from '../shared/snackbar.service';
 
 interface Product {
   id: string;
