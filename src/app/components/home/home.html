@@ -106,10 +106,16 @@
             <aside class="left-aside">
                 <div class="categories">
                     <h4 class="cat-title">CATEGORIES</h4>
-                    <ul>
+                    <div class="category-state" *ngIf="categoriesLoading">Loading categories...</div>
+                    <div class="category-state error" *ngIf="categoriesError">{{categoriesError}}</div>
+                    <div class="category-state" *ngIf="!categoriesLoading && !categoriesError && categories.length === 0">No categories yet.</div>
+                    <ul *ngIf="categories.length > 0">
                         <li *ngFor="let c of categories; let i = index" [class.open]="expanded[i]">
                             <a [routerLink]="c.link" class="cat-link">
-                                <span class="icon">{{c.icon}}</span>
+                                <span class="icon">
+                                    <img *ngIf="isImageIcon(c.icon); else textIcon" [src]="c.icon" [alt]="c.name">
+                                    <ng-template #textIcon>{{c.icon}}</ng-template>
+                                </span>
                                 <span class="label">{{c.name}}</span>
                             </a>
                             <button class="toggle-btn" type="button" (click)="toggle(i, $event)" aria-label="Toggle {{c.name}}">

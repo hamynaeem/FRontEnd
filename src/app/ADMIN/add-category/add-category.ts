@@ -3,7 +3,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { SnackbarService } from '../../components/shared/snackbar.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CategoryService, Category } from '../../components/services/category.service';
+import { Category, getCategories, createCategory, updateCategory, deleteCategory } from '../../components/stores/category-store';
 
 @Component({
   selector: 'app-add-category',
@@ -23,15 +23,14 @@ export class AddCategory implements OnInit {
 
   constructor(
     private snackbar: SnackbarService,
-    private categoryService: CategoryService
-  ){}
+   ){}
 
   ngOnInit(): void {
     this.loadCategories();
   }
 
   private loadCategories(){
-    this.categoryService.getCategories().subscribe({
+    getCategories().subscribe({
       next: (data) => {
         this.categories = data;
       },
@@ -40,6 +39,12 @@ export class AddCategory implements OnInit {
         this.error = 'Failed to load categories';
       }
     });
+  }
+
+  isImageIcon(icon?: string): boolean {
+    if (!icon) return false;
+
+    return /^(https?:\/\/|\/|assets\/).+\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(icon.trim());
   }
 
   save(ev: Event){
@@ -59,7 +64,7 @@ export class AddCategory implements OnInit {
 
     if (this.editingId) {
       const idToUpdate = this.editingId;
-      this.categoryService.updateCategory(idToUpdate, payload).subscribe({
+      updateCategory(idToUpdate, payload).subscribe({
         next: (updatedCat) => {
           const idx = this.categories.findIndex(c => c.id === idToUpdate);
           if (idx > -1) {
@@ -75,7 +80,7 @@ export class AddCategory implements OnInit {
         }
       });
     } else {
-      this.categoryService.createCategory(payload).subscribe({
+      createCategory(payload).subscribe({
         next: (newCat) => {
           this.categories.unshift(newCat);
           try { this.saved.emit(newCat); } catch {}
@@ -112,7 +117,7 @@ export class AddCategory implements OnInit {
     const removed = this.categories.find(c => c.id === id);
     if (!removed) return;
 
-    this.categoryService.deleteCategory(id).subscribe({
+    deleteCategory(id).subscribe({
       next: () => {
         this.categories = this.categories.filter(c => c.id !== id);
         this.snackbar.show('Category deleted', {
@@ -124,7 +129,7 @@ export class AddCategory implements OnInit {
               icon: removed.icon || undefined,
               parent: removed.parent || undefined
             };
-            this.categoryService.createCategory(payload).subscribe({
+            createCategory(payload).subscribe({
               next: (restoredCat) => {
                 this.categories.unshift(restoredCat);
                 this.snackbar.show('Restore successful', { duration: 2200, type: 'success' });

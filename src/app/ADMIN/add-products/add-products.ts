@@ -3,24 +3,8 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SnackbarService } from '../../components/shared/snackbar.service';
-import { CategoryService } from '../../components/services/category.service';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  category?: string;
-  description?: string;
-  image?: string;
-  specs?: {
-    ram?: string;
-    rom?: string;
-    battery?: string;
-    display?: string;
-    camera?: string;
-    processor?: string;
-  };
-}
+import { getCategories } from '../../components/stores/category-store';
+import { getProducts, createProduct, updateProduct, deleteProduct, Product, ProductPayload } from '../../components/stores/product-store';
 
 @Component({
   selector: 'app-add-products',
@@ -41,7 +25,6 @@ export class AddProducts implements OnInit {
 
   constructor(
     private snackbar: SnackbarService,
-    private categoryService: CategoryService
   ) {}
 
   ngOnInit(): void {
@@ -50,16 +33,20 @@ export class AddProducts implements OnInit {
   }
 
   private loadProducts(){
-    try{
-      const raw = localStorage.getItem('products');
-      this.products = raw ? JSON.parse(raw) : [];
-    }catch{
-      this.products = [];
-    }
+    getProducts().subscribe({
+      next: (data) => {
+        this.products = data;
+      },
+      error: (err) => {
+        console.error(err);
+        this.products = [];
+        this.error = 'Failed to load products';
+      }
+    });
   }
 
   private loadCategories(){
-    this.categoryService.getCategories().subscribe({
+    getCategories().subscribe({
       next: (data) => {
         this.categories = data;
       },
@@ -93,42 +80,56 @@ export class AddProducts implements OnInit {
       processor: (this.model.specs?.processor || '').trim() || undefined,
     };
 
-    if(this.editingId){
-      const idx = this.products.findIndex(p => p.id === this.editingId);
-      if(idx > -1){
-        this.products[idx] = {
-          id: this.editingId,
-          name,
-          price,
-          category: (this.model.category || '').trim() || undefined,
-          description: (this.model.description || '').trim() || undefined,
-          image: (this.model.image || '').trim() || undefined,
-          specs
-        };
-        localStorage.setItem('products', JSON.stringify(this.products));
-        try{ this.saved.emit({ action: 'updated', item: this.products[idx] }); }catch{}
-        this.snackbar.show('Product updated', { type: 'success', duration: 2500 });
-      }
-      this.editingId = null;
-    } else {
-      const prod: Product = {
-        id: Date.now(),
-        name,
-        price,
-        category: (this.model.category || '').trim() || undefined,
-        description: (this.model.description || '').trim() || undefined,
-        image: (this.model.image || '').trim() || undefined,
-        specs
-      };
-      this.products.unshift(prod);
-      localStorage.setItem('products', JSON.stringify(this.products));
-      try{ this.saved.emit(prod); }catch{}
-      const added = prod;
-      this.snackbar.show('Product added', { type: 'success', duration: 4000, actionText: 'Undo', action: () => { this.remove(added.id, true); this.snackbar.show('Add undone', { duration: 2200, type: 'info' }); } });
-    }
+    const payload: ProductPayload = {
+      name,
+      price,
+      category: (this.model.category || '').trim() || undefined,
+      description: (this.model.description || '').trim() || undefined,
+      image: (this.model.image || '').trim() || undefined,
+      specs
+    };
 
-    if(this.showAddButton) this.showModal = false;
-    this.model = { name: '', price: 0, category: '', description: '', image: '', specs: { ram: '', rom: '', battery: '', display: '', camera: '', processor: '' } };
+    if(this.editingId){
+      const idToUpdate = this.editingId;
+      updateProduct(idToUpdate, payload).subscribe({
+        next: (updatedProduct) => {
+          const idx = this.products.findIndex(p => p.id === idToUpdate);
+          if(idx > -1){
+            this.products[idx] = updatedProduct;
+          }
+          try{ this.saved.emit({ action: 'updated', item: updatedProduct }); }catch{}
+          this.snackbar.show('Product updated', { type: 'success', duration: 2500 });
+          this.cancelEdit();
+        },
+        error: (err) => {
+          console.error(err);
+          this.error = 'Failed to update product';
+        }
+      });
+    } else {
+      createProduct(payload).subscribe({
+        next: (newProduct) => {
+          this.products.unshift(newProduct);
+          try{ this.saved.emit(newProduct); }catch{}
+          this.snackbar.show('Product added', {
+            type: 'success',
+            duration: 4000,
+            actionText: 'Undo',
+            action: () => {
+              this.remove(newProduct.id, true);
+              this.snackbar.show('Add undone', { duration: 2200, type: 'info' });
+            }
+          });
+
+          if(this.showAddButton) this.showModal = false;
+          this.model = { name: '', price: 0, category: '', description: '', image: '', specs: { ram: '', rom: '', battery: '', display: '', camera: '', processor: '' } };
+        },
+        error: (err) => {
+          console.error(err);
+          this.error = 'Failed to add product';
+        }
+      });
+    }
   }
 
   remove(id: number, skipConfirm = false){
@@ -136,11 +137,41 @@ export class AddProducts implements OnInit {
       if(!confirm('Delete this product?')) return;
     }
     const removed = this.products.find(p => p.id === id);
-    this.products = this.products.filter(p => p.id !== id);
-    localStorage.setItem('products', JSON.stringify(this.products));
-    if(removed){
-      this.snackbar.show('Product deleted', { duration: 4000, actionText: 'Undo', action: () => { this.products.unshift(removed); localStorage.setItem('products', JSON.stringify(this.products)); this.snackbar.show('Restore successful', { duration: 2200, type: 'success' }); } });
-    }
+    if(!removed) return;
+
+    deleteProduct(id).subscribe({
+      next: () => {
+        this.products = this.products.filter(p => p.id !== id);
+        this.snackbar.show('Product deleted', {
+          duration: 4000,
+          actionText: 'Undo',
+          action: () => {
+            const payload: ProductPayload = {
+              name: removed.name,
+              price: removed.price,
+              category: removed.category || undefined,
+              description: removed.description || undefined,
+              image: removed.image || undefined,
+              specs: removed.specs || undefined
+            };
+            createProduct(payload).subscribe({
+              next: (restoredProduct) => {
+                this.products.unshift(restoredProduct);
+                this.snackbar.show('Restore successful', { duration: 2200, type: 'success' });
+              },
+              error: (err) => {
+                console.error(err);
+                this.snackbar.show('Failed to restore product', { duration: 2200, type: 'error' });
+              }
+            });
+          }
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        this.snackbar.show('Failed to delete product', { duration: 2200, type: 'error' });
+      }
+    });
   }
 
   edit(p: Product){

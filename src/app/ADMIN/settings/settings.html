@@ -1,0 +1,90 @@
+<div class="settings-page">
+	<div class="settings-head">
+		<h2>Admin Settings</h2>
+		<p class="muted">Update admin profile, preferences and security settings.</p>
+	</div>
+
+	<form class="settings-grid" (ngSubmit)="saveSettings()" *ngIf="form">
+		<div class="card profile-card">
+			 
+
+			<label class="field">Name
+				<input type="text" [(ngModel)]="form.name" name="name" required />
+			</label>
+
+			<label class="field">Email
+				<input type="email" [(ngModel)]="form.email" name="email" required />
+			</label>
+
+			<label class="field">Store name
+				<input type="text" [(ngModel)]="form.storeName" name="storeName" />
+			</label>
+
+			<label class="field">Phone
+				<input type="text" [(ngModel)]="form.phone" name="phone" />
+			</label>
+
+			<label class="field">City
+				<input type="text" [(ngModel)]="form.city" name="city" />
+			</label>
+
+			<label class="field">Country
+				<input type="text" [(ngModel)]="form.country" name="country" />
+			</label>
+
+			<label class="field">Theme
+				<select [(ngModel)]="form.theme" name="theme">
+					<option value="light">Light</option>
+					<option value="dark">Dark</option>
+				</select>
+			</label>
+
+			<label class="field checkbox"><input type="checkbox" [(ngModel)]="form.notifications" name="notifications" /> Enable notifications</label>
+			<label class="field checkbox"><input type="checkbox" [(ngModel)]="form.maintenanceMode" name="maintenanceMode" /> Maintenance mode</label>
+		</div>
+
+		<div class="card security-card">
+			<h3>Security</h3>
+			<label class="field">Current password
+				<div class="current-row">
+					<input [type]="revealedPassword ? 'text' : 'password'" [(ngModel)]="oldPassword" name="oldPassword" />
+					<div class="current-controls">
+						<button type="button" class="small-btn" (click)="revealCurrentPassword()">{{ revealedPassword ? 'Hide' : 'Show' }}</button>
+						<button *ngIf="revealedPassword" type="button" class="small-btn" (click)="copyRevealedPassword()">Copy</button>
+						<button *ngIf="revealedPassword" type="button" class="small-btn" (click)="useRevealedPassword()">Use</button>
+					</div>
+				</div>
+			</label>
+			<div *ngIf="revealedPassword" class="revealed">Current password: <strong>{{ revealedPassword }}</strong></div>
+			<label class="field">New password
+				<input type="password" [(ngModel)]="newPassword" name="newPassword" />
+			</label>
+			<label class="field">Confirm new password
+				<input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" />
+			</label>
+			<div class="actions">
+				<button type="button" class="btn" (click)="changePassword()">Change Password</button>
+			</div>
+		</div>
+
+		<div class="form-actions">
+			<button type="submit" class="btn">Save Settings</button>
+		</div>
+	</form>
+
+	<!-- Read-only store info fetched from admin-store -->
+	<div *ngIf="settings" class="card store-info-card">
+		<h3>{{ settings.storeName || settings.name }}</h3>
+		<ul class="contact-list">
+			<li *ngIf="settings.city || settings.country"><span class="icon">📍</span> {{ settings.city }}<span *ngIf="settings.city && settings.country">, </span>{{ settings.country }}</li>
+			<li *ngIf="settings.phone"><span class="icon">📞</span> {{ settings.phone }}</li>
+			<li *ngIf="settings.email"><span class="icon">✉️</span> {{ settings.email }}</li>
+		</ul>
+		<div class="store-info-actions">
+			<button type="button" class="small-btn" (click)="loadSampleContact()">Load into form</button>
+			<button type="button" class="btn" (click)="replaceWithSampleContact()">Replace now</button>
+		</div>
+	</div>
+
+	<div *ngIf="!form" class="no-results">Loading settings…</div>
+</div>

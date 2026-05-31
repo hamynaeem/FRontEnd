@@ -329,3 +329,164 @@ a.s[aria-label="Instagram"] {
     animation: none
   }
 }
+
+/* Mobile refinements for contact page */
+@media (max-width: 700px) {
+  .contact-page {
+    grid-template-columns: 1fr;
+    padding: 22px 18px;
+    gap: 18px;
+  }
+
+  .contact-page.container {
+    padding-left: 18px;
+    padding-right: 18px;
+    width: auto;
+    left: 0;
+    transform: none;
+  }
+
+  .contact-page::before {
+    width: 96px;
+    height: 96px;
+    top: 6%;
+    opacity: 0.9;
+  }
+
+  .contact-page::after {
+    display: none;
+  }
+
+  .decor-circle {
+    display: none;
+  }
+
+  .contact-sidebar {
+    gap: 14px;
+  }
+
+  .help-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .help-card .contact-item {
+    gap: 8px;
+  }
+
+  .social-icons .s {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .social-icons .s::after {
+    inset: 12%;
+  }
+
+  .contact-form {
+    padding: 18px;
+    border-radius: 14px;
+    box-shadow: 0 18px 50px rgba(16, 24, 40, 0.06);
+  }
+
+  .contact-form h2 {
+    font-size: 1rem;
+    margin-top: 12px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    padding: 12px 12px;
+    font-size: 15px;
+    border-radius: 10px;
+  }
+
+  .actions .btn.primary {
+    padding: 12px;
+    border-radius: 20px;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 420px) {
+  .contact-page {
+    padding: 16px 12px;
+  }
+
+  .contact-page.container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .contact-page::before {
+    width: 64px;
+    height: 64px;
+    top: 3%;
+    display: none;
+  }
+
+  .help-card .contact-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .social-icons {
+    gap: 10px;
+  }
+
+  .social-icons .s {
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
+  }
+
+  .contact-form label {
+    font-size: 14px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    padding: 10px 12px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .contact-form {
+    padding: 12px;
+  }
+
+  .help-card {
+    padding: 12px;
+  }
+
+  .social-icons .s {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .btn {
+    min-height: 44px;
+    padding: 10px 12px;
+  }
+
+  .contact-page {
+    padding: 10px 10px;
+  }
+}
+
+/* Touch and accessibility tweaks */
+.social-icons .s,
+.btn {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.social-icons .s:focus,
+.btn:focus {
+  outline: 3px solid rgba(37, 211, 102, 0.14);
+  outline-offset: 3px;
+}

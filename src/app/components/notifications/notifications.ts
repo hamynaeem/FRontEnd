@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { OrderService } from '../services/order.service';
+import { OrderService, Order } from '../services/order.service';
 import { SnackbarService } from '../shared/snackbar.service';
 
 
@@ -14,6 +14,8 @@ import { SnackbarService } from '../shared/snackbar.service';
 })
 export class Notifications implements OnInit {
   notifications: { id?: string; message: string; time: string }[] = [];
+  selectedId: string | null = null;
+  selectedOrder: Order | null = null;
 
   constructor(private router: Router, private snackbar: SnackbarService) {}
 
@@ -36,6 +38,21 @@ export class Notifications implements OnInit {
   openOrder(id?: string){
     if(!id) return;
     try { this.router.navigate(['/orders'], { queryParams: { id } }); } catch {}
+  }
+
+  toggleDetails(id?: string){
+    if(!id) return;
+    if(this.selectedId === id){
+      this.selectedId = null;
+      this.selectedOrder = null;
+      return;
+    }
+    this.selectedId = id;
+    try {
+      this.selectedOrder = OrderService.getById(id);
+    } catch {
+      this.selectedOrder = null;
+    }
   }
 
   clearAll(){

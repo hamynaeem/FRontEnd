@@ -72,7 +72,8 @@ export const routes: Routes = [
           { path: 'dashboard', loadComponent: () => import('./ADMIN/dashboard/overview').then(m => m.Overview) },
           { path: 'add-category', loadComponent: () => import('./ADMIN/add-category/add-category').then(m => m.AddCategory) },
           { path: 'add-products', loadComponent: () => import('./ADMIN/add-products/add-products').then(m => m.AddProducts) },
-          { path: 'view-orders', loadComponent: () => import('./ADMIN/view-orders/view-orders').then(m => m.ViewOrders) }
+          { path: 'view-orders', loadComponent: () => import('./ADMIN/view-orders/view-orders').then(m => m.ViewOrders) },
+          { path: 'settings', loadComponent: () => import('./ADMIN/settings/settings').then(m => m.Settings) },
         ]
       }
 ];

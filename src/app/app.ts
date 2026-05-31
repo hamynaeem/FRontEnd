@@ -20,6 +20,7 @@ export class App implements OnDestroy {
   public showHeaderFooter = true;
   public cartCount = signal<number>(0);
   public showSettingsMenu = false;
+  public navOpen = false;
   private _routerSub: Subscription | null = null;
   private _outsideClickHandler: ((ev: Event) => void) | null = null;
 
@@ -29,6 +30,8 @@ export class App implements OnDestroy {
     this._routerSub = this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe((ev: any) => {
       const url = ev.urlAfterRedirects ?? ev.url ?? this.router.url;
       this.updateHeaderFooterVisibility(url);
+      // close mobile nav when route changes
+      this.navOpen = false;
     });
 
     // initialize and subscribe to cart changes
@@ -73,6 +76,10 @@ export class App implements OnDestroy {
 
   toggleMobileSearch(){
     this.showMobileSearch = !this.showMobileSearch;
+  }
+
+  toggleNav(){
+    this.navOpen = !this.navOpen;
   }
 
   toggleSettings(ev: Event){

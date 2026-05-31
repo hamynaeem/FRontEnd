@@ -1,29 +1,11 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SnackbarService } from '../../components/shared/snackbar.service';
+import { Subscription } from 'rxjs';
+import { observeOrders, updateOrder, deleteOrder as deleteOrderFromStore, restoreOrder, Order } from '../../components/stores/order-store';
 
-interface OrderItem {
-  productId?: number;
-  name: string;
-  qty: number;
-  price: number;
-  image?: string;
-}
-
-interface Order {
-  id: number;
-  orderNo: string;
-  date: string; // ISO
-  customer: { name: string; email?: string; phone?: string; address?: string };
-  items: OrderItem[];
-  total: number;
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  paymentMethod?: string;
-  shippingMethod?: string;
-  notes?: string;
-}
 
 @Component({
   selector: 'app-view-orders',
@@ -38,61 +20,20 @@ export class ViewOrders implements OnInit {
   statusFilter: string = 'all';
   selectedOrder: Order | null = null;
   showModal = false;
+  private ordersSub: Subscription | null = null;
 
   constructor(private snackbar: SnackbarService) {}
 
   ngOnInit(): void {
-    this.loadOrders();
+    this.ordersSub = observeOrders().subscribe((orders) => {
+      this.orders = orders;
+    });
   }
 
-  private loadOrders(){
-    try{
-      const raw = localStorage.getItem('orders');
-      if(raw){
-        this.orders = JSON.parse(raw);
-      } else {
-        this.orders = this.sampleOrders();
-        localStorage.setItem('orders', JSON.stringify(this.orders));
-      }
-    }catch{
-      this.orders = [];
-    }
+  ngOnDestroy(): void {
+    if (this.ordersSub) this.ordersSub.unsubscribe();
   }
 
-  private sampleOrders(): Order[]{
-    const now = new Date();
-    return [
-      {
-        id: Date.now(),
-        orderNo: `ORD-${now.getFullYear()}-${Math.floor(Math.random()*9000)+1000}`,
-        date: now.toISOString(),
-        customer: { name: 'Alice Johnson', email: 'alice@example.com', phone: '+1 555-0100', address: '123 Main St, Springfield' },
-        items: [
-          { productId: 1, name: 'Smartphone X', qty: 1, price: 599, image: '' },
-          { productId: 2, name: 'Protective Case', qty: 1, price: 29 }
-        ],
-        total: 628,
-        status: 'pending',
-        paymentMethod: 'Card',
-        shippingMethod: 'Standard',
-        notes: 'Deliver between 9am-5pm'
-      },
-      {
-        id: Date.now()+1,
-        orderNo: `ORD-${now.getFullYear()}-${Math.floor(Math.random()*9000)+1000}`,
-        date: new Date(now.getTime()-1000*60*60*24*2).toISOString(),
-        customer: { name: 'Bob Martin', email: 'bob@example.com', phone: '+1 555-0111', address: '45 Elm Ave, Rivertown' },
-        items: [
-          { productId: 3, name: 'Phone Charger', qty: 2, price: 19 }
-        ],
-        total: 38,
-        status: 'shipped',
-        paymentMethod: 'PayPal',
-        shippingMethod: 'Express',
-        notes: ''
-      }
-    ];
-  }
 
   get filteredOrders(){
     const q = (this.searchTerm || '').toLowerCase().trim();
@@ -113,22 +54,33 @@ export class ViewOrders implements OnInit {
 
   markStatus(o: Order, newStatus: Order['status']){
     const prev = o.status;
-    o.status = newStatus;
-    this.saveOrders();
-    this.snackbar.show(`Order ${o.orderNo} → ${newStatus}`, { type: 'success', duration: 3500, actionText: 'Undo', action: () => { o.status = prev; this.saveOrders(); this.snackbar.show('Undo successful', { duration: 2000, type: 'info' }); } });
+    updateOrder(o.id, { status: newStatus }).subscribe({
+      next: () => {
+        this.snackbar.show(`Order ${o.orderNo} → ${newStatus}`, { type: 'success', duration: 3500, actionText: 'Undo', action: () => { updateOrder(o.id, { status: prev }).subscribe(()=>{ this.snackbar.show('Undo successful', { duration: 2000, type: 'info' }); }, (err)=>{ console.error(err); }); } });
+      },
+      error: (err) => { console.error(err); this.snackbar.show('Failed to update order', { duration: 2200, type: 'error' }); }
+    });
   }
 
   deleteOrder(o: Order){
     if(!confirm('Delete this order permanently?')) return;
     const idx = this.orders.findIndex(x => x.id === o.id);
     if(idx === -1) return;
-    this.orders.splice(idx,1);
-    this.saveOrders();
-    this.snackbar.show('Order deleted', { duration: 4000, actionText: 'Undo', action: () => { this.orders.splice(idx,0,o); this.saveOrders(); this.snackbar.show('Restore successful', { duration: 2200, type: 'success' }); } });
-  }
-
-  saveOrders(){
-    try{ localStorage.setItem('orders', JSON.stringify(this.orders)); }catch{}
+    deleteOrderFromStore(o.id).subscribe({
+      next: () => {
+        this.snackbar.show('Order deleted', {
+          duration: 4000,
+          actionText: 'Undo',
+          action: () => {
+            restoreOrder(o, idx).subscribe({
+              next: () => this.snackbar.show('Restore successful', { duration: 2200, type: 'success' }),
+              error: (err) => { console.error(err); this.snackbar.show('Failed to restore order', { duration: 2200, type: 'error' }); }
+            });
+          }
+        });
+      },
+      error: (err) => { console.error(err); this.snackbar.show('Failed to delete order', { duration: 2200, type: 'error' }); }
+    });
   }
 
   orderItemCount(o: Order){ return o.items?.reduce((s,i)=>s+i.qty,0) || 0; }

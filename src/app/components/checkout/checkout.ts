@@ -39,6 +39,10 @@ export class Checkout implements OnInit, OnDestroy {
   expiry = '';
   cvv = '';
 
+  // discount and cart summary
+  discount = 0;
+  discountCode = '';
+
   // address book
   addresses: Address[] = [];
   selectedAddressId: string | null = null;
@@ -194,6 +198,39 @@ export class Checkout implements OnInit, OnDestroy {
     this.scheduleSaveDraft();
   }
 
+  // cart helpers
+  get items() {
+    return CartService.get() || [];
+  }
+
+  get subtotal() {
+    const items = this.items || [];
+    return items.reduce((s, i) => s + (i.price || 0) * (i.qty || 1), 0);
+  }
+
+  get shipping() {
+    return this.subtotal > 0 ? 5 : 0;
+  }
+
+  get total() {
+    return Math.max(0, this.subtotal + this.shipping - (this.discount || 0));
+  }
+
+  applyDiscount(): void {
+    const code = (this.discountCode || '').trim().toUpperCase();
+    if (!code) {
+      this.snackbar.show('Enter a discount code', { type: 'error' });
+      return;
+    }
+    if (code === 'DISCOUNT10' || code === 'SAVE10') {
+      this.discount = 10;
+      this.snackbar.show('Discount applied', { type: 'success' });
+      this.scheduleSaveDraft();
+    } else {
+      this.snackbar.show('Invalid discount code', { type: 'error' });
+    }
+  }
+
   placeOrder(ev: Event): void {
     ev.preventDefault();
     // ensure an address exists
@@ -214,9 +251,9 @@ export class Checkout implements OnInit, OnDestroy {
         return;
       }
 
-      const subtotal = items.reduce((s, i) => s + (i.price || 0) * i.qty, 0);
-      const tax = Math.round(subtotal * 0.04);
-      const total = subtotal + tax;
+      const subtotal = this.subtotal;
+      const shipping = this.shipping;
+      const total = this.total;
       const createdAt = new Date().toISOString();
       const selectedAddress = this.addresses.find(a => a.id === this.selectedAddressId) ?? {
         name: this.name,
@@ -231,7 +268,8 @@ export class Checkout implements OnInit, OnDestroy {
         id: 'ord_' + Date.now().toString(),
         items,
         subtotal,
-        tax,
+        shipping,
+        discount: this.discount,
         total,
         address: selectedAddress,
         paymentMethod: this.paymentMethod(),

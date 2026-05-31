@@ -345,6 +345,16 @@
 	padding: 0
 }
 
+.category-state {
+	padding: 12px 10px;
+	color: var(--muted);
+	font-size: 0.92rem;
+}
+
+.category-state.error {
+	color: #b42318;
+}
+
 .categories li {
 	display: flex;
 	align-items: center;
@@ -387,6 +397,12 @@
 	position: relative;
 	border: 1px solid var(--glass-border);
 	box-shadow: 0 10px 30px rgba(79,141,244,0.06);
+}
+
+.cat-link .icon img {
+	width: 24px;
+	height: 24px;
+	object-fit: contain;
 }
 
 .cat-link .icon::after {
@@ -627,4 +643,36 @@
 	.product-grid {
 		grid-template-columns: repeat(1, 1fr)
 	}
+}
+
+/* Extra mobile refinements */
+@media (max-width:600px) {
+	/* compact hero for small phones */
+	.hero-slide {
+		padding: 18px 12px 36px;
+		gap: 12px;
+		min-height: auto;
+	}
+	.hero-content h1 { font-size: 1.4rem; }
+	.hero-content p { font-size: 0.95rem; max-width: none; }
+	.hero-actions { justify-content: center; gap: 8px }
+
+	/* hide heavy visuals on very small screens to prioritize content */
+	.hero-visual { display: none; }
+
+	/* make dots easier to tap */
+	.hero-dots { bottom: 12px }
+	.hero-dots label span { width: 12px; height: 12px; border-width: 1.5px }
+
+	/* compact product cards */
+	.product-card img { height: 150px }
+	.product-card .meta { padding: 10px }
+
+	/* categories: reduce padding and make subitems full-width (already handled) */
+	.categories li { padding: 8px }
+	.sub-items { padding-left: 40px }
+
+	/* reduce overall container padding */
+	:host { padding: 18px 0 }
+	.new-arrivals { padding: 18px 8px }
 }

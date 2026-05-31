@@ -10,13 +10,50 @@
   <div *ngIf="notifications.length === 0" class="empty">No notifications</div>
 
   <ul class="notif-list" *ngIf="notifications.length">
-    <li *ngFor="let n of notifications" class="notif-item">
-      <div class="msg">
-        <div class="text">{{ n.message }}</div>
-        <div class="time">{{ n.time }}</div>
+    <li *ngFor="let n of notifications" class="notif-item" [attr.data-id]="n.id">
+      <div class="left">
+        <div class="avatar">#</div>
+        <div class="msg">
+          <div class="text">{{ n.message }}</div>
+          <div class="time">{{ n.time }}</div>
+        </div>
       </div>
+
       <div class="actions">
-        <button class="link" (click)="openOrder(n.id)">View</button>
+        <button class="link" (click)="toggleDetails(n.id)">{{ selectedId === n.id ? 'Close' : 'View' }}</button>
+        <button class="link" (click)="openOrder(n.id)">Open</button>
+      </div>
+
+      <div *ngIf="selectedId === n.id" class="notif-details">
+        <ng-container *ngIf="selectedOrder; else noOrder">
+          <div class="items">
+            <div class="item" *ngFor="let it of selectedOrder.items">
+              <img [src]="it.image || 'assets/images/s26.png'" alt="{{ it.title }}">
+              <div class="meta">
+                <div class="title">{{ it.title }}</div>
+                <div class="subtitle">Qty: {{ it.qty }} × Rs {{ it.price | number:'1.2-2' }}</div>
+              </div>
+              <div class="price">Rs {{ (it.price * it.qty) | number:'1.2-2' }}</div>
+            </div>
+          </div>
+
+          <div class="summary">
+            <div>Subtotal</div>
+            <div>Rs {{ selectedOrder.subtotal | number:'1.2-2' }}</div>
+          </div>
+          <div class="summary"><div>Tax</div><div>Rs {{ selectedOrder.tax | number:'1.2-2' }}</div></div>
+          <div class="summary"><div>Total</div><div>Rs {{ selectedOrder.total | number:'1.2-2' }}</div></div>
+
+          <div class="address"><strong>Ship to:</strong> {{ selectedOrder.address?.name }} — {{ selectedOrder.address?.address }}, {{ selectedOrder.address?.city }}</div>
+
+          <div class="updates"><strong>Status timeline:</strong>
+            <div *ngFor="let u of selectedOrder.updates">{{ u.date | date:'short' }} — {{ u.status }}</div>
+          </div>
+
+        </ng-container>
+        <ng-template #noOrder>
+          <div class="empty">Order details not available.</div>
+        </ng-template>
       </div>
     </li>
   </ul>

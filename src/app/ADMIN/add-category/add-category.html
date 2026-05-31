@@ -38,7 +38,10 @@
 			<li *ngFor="let c of categories">
 				<div class="cat">
 					<div class="cat-left">
-						<div class="cat-icon">{{c.icon || '📁'}}</div>
+						<div class="cat-icon">
+							<img *ngIf="isImageIcon(c.icon); else iconText" [src]="c.icon" [alt]="c.name" />
+							<ng-template #iconText>{{c.icon || '📁'}}</ng-template>
+						</div>
 					</div>
 					<div class="cat-mid">
 						<div class="cat-name">{{c.name}}</div>
