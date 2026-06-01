@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "netlify-build": "npm run build",
+    "netlify-deploy": "netlify deploy --dir=dist/Projects --prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -37,6 +39,7 @@
     "@angular/cli": "^21.0.4",
     "@angular/compiler-cli": "^21.0.0",
     "jsdom": "^27.1.0",
+    "netlify-cli": "^26.1.0",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
   }
