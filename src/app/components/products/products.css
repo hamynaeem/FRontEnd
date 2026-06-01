@@ -166,6 +166,14 @@
 	padding: 6px
 }
 
+.card-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin-bottom: 6px;
+}
+
 .rating {
 	background: #fff6e6;
 	padding: 6px 8px;
@@ -226,3 +234,34 @@
 		grid-template-columns: repeat(1, 1fr)
 	}
 }
+
+/* Specs button and panel */
+.card-actions {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.specs-btn {
+	background: linear-gradient(90deg,#6b7280,#111827);
+	color: white;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 8px;
+	font-weight: 700;
+	cursor: pointer;
+	box-shadow: 0 8px 20px rgba(2,6,23,0.08);
+}
+
+.specs-btn:hover { transform: translateY(-2px); }
+
+.product-specs {
+	margin-top: 8px;
+	background: rgba(255,255,255,0.85);
+	padding: 10px;
+	border-radius: 8px;
+	color: #111827;
+	font-size: 0.95rem;
+}
+
+.product-specs ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px }
+.product-specs li { padding: 4px 6px; background: rgba(0,0,0,0.03); border-radius: 6px }

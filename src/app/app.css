@@ -621,3 +621,87 @@ a {
 	.icon-btn .badge { right: -4px; top: -6px; padding: 2px 5px; font-size: 11px; }
 	.site-footer .footer-inner > * { padding: 12px; }
 }
+
+/* Footer store info card */
+.store-info-card {
+	background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));
+	border: 1px solid var(--glass-border);
+	border-radius: 12px;
+	padding: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 100%;
+	box-shadow: 0 10px 30px rgba(2,6,23,0.10);
+	max-width: 360px;
+}
+
+.store-info-card h3 {
+	margin: 0;
+	font-size: 1.05rem;
+	color: #fff;
+	font-weight: 700;
+	letter-spacing: -0.2px;
+}
+
+.store-info-card .contact-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	color: #9fb8d8;
+	font-size: 0.95rem;
+}
+
+.store-info-card .contact-list li {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	line-height: 1.2;
+}
+
+.store-info-card .contact-list .icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	flex-shrink: 0;
+	font-size: 1rem;
+}
+
+.store-info-card .store-info-actions {
+	display: flex;
+	gap: 8px;
+	margin-top: 6px;
+}
+
+.store-info-card .small-btn {
+	background: transparent;
+	border: 1px solid rgba(255,255,255,0.06);
+	color: var(--text);
+	padding: 6px 10px;
+	border-radius: 8px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.store-info-card .small-btn:hover {
+	background: rgba(255,255,255,0.02);
+	transform: translateY(-2px);
+}
+
+.store-info-card .btn {
+	background: linear-gradient(90deg, var(--primary), var(--accent));
+	color: #fff;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.store-info-card .btn:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 12px 26px rgba(9,64,144,0.10);
+}

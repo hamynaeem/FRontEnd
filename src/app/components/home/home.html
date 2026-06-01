@@ -1,195 +1,336 @@
-<section class="hero-slider">
-  
+<!-- ══════════════════════════════════════════════════════════════
+     HERO BANNER
+══════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <!-- Ambient orbs -->
+  <div class="hero-bg">
+    <div class="hero-orb orb1"></div>
+    <div class="hero-orb orb2"></div>
+    <div class="hero-orb orb3"></div>
+  </div>
 
-    <div class="hero-track">
-        <!-- Slide 1 -->
-        <div class="hero-slide hs1">
-            <div class="hero-glow"></div>
-            <div class="hero-content">
-                <span class="hero-badge">🔥 Hot Deal</span>
-                <h1>Great Deals on<br><span class="hero-highlight">Tablets & iPads</span></h1>
-                <p>Tested Quality and Seamless Performance</p>
-                <div class="hero-actions">
-                    <button class="hero-btn primary">Find Your Tablet</button>
-                    <button class="hero-btn ghost">Learn More</button>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="hero-img-wrap">
-                    <img src="assets/images/s26.png" alt="tablet">
-                    <div class="hero-img-glow"></div>
-                </div>
-            </div>
+  <!-- Slides -->
+  <div class="hero-track">
+    <div *ngFor="let slide of slides; let i = index"
+         class="hero-slide"
+         [class.active]="currentSlide() === i">
+      <div class="hero-content">
+        <span class="hero-badge">{{ slide.badge }}</span>
+        <h1>{{ slide.headline }}<br><span class="gradient-text">{{ slide.highlight }}</span></h1>
+        <p>{{ slide.sub }}</p>
+        <div class="hero-btns">
+          <button class="btn-primary" routerLink="/products">🛍️ Shop Now</button>
+          <button class="btn-ghost" routerLink="/products">Explore Collection →</button>
         </div>
-
-        <!-- Slide 2 -->
-        <div class="hero-slide hs2">
-            <div class="hero-glow"></div>
-            <div class="hero-content">
-                <span class="hero-badge">🛠️ Genuine Parts</span>
-                <h1>Original<br><span class="hero-highlight">Spare Parts</span></h1>
-                <p>Mobile, Laptop, Smart Watch &amp; Tablet parts</p>
-                <div class="hero-actions">
-                    <button class="hero-btn primary">Find Parts</button>
-                    <button class="hero-btn ghost">Browse All</button>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="hero-img-wrap">
-                    <img src="assets/images/s26.png" alt="parts">
-                    <div class="hero-img-glow"></div>
-                </div>
-            </div>
+      </div>
+      <div class="hero-visual anim-float">
+        <div class="hero-phone-wrap">
+          <div class="phone-glow"></div>
+          <img src="assets/images/s26.png" alt="Premium Smartphone" loading="lazy">
         </div>
-
-        <!-- Slide 3 -->
-        <div class="hero-slide hs3">
-            <div class="hero-glow"></div>
-            <div class="hero-content">
-                <span class="hero-badge">✅ Trusted Quality</span>
-                <h1>Used Mobiles<br><span class="hero-highlight">You Can Trust</span></h1>
-                <p>Pakistan's Leading Collection — USA &amp; UAE Imports</p>
-                <div class="hero-actions">
-                    <button class="hero-btn primary">Explore Now</button>
-                    <button class="hero-btn ghost">View All</button>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="hero-img-wrap">
-                    <img src="assets/images/s26.png" alt="mobiles">
-                    <div class="hero-img-glow"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 4 -->
-        <div class="hero-slide hs4">
-            <div class="hero-glow"></div>
-            <div class="hero-content">
-                <span class="hero-badge">⚡ New Arrivals</span>
-                <h1>iPad &amp;<br><span class="hero-highlight">Tablets</span></h1>
-                <p>Power Up Your Digital Lifestyle</p>
-                <div class="hero-actions">
-                    <button class="hero-btn primary">Grab Yours</button>
-                    <button class="hero-btn ghost">See Offers</button>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="hero-img-wrap">
-                    <img src="assets/images/s26.png" alt="ipad">
-                    <div class="hero-img-glow"></div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Dots -->
-    <div class="hero-dots">
-        <label for="h1"><span></span></label>
-        <label for="h2"><span></span></label>
-        <label for="h3"><span></span></label>
-        <label for="h4"><span></span></label>
-    </div>
+  <!-- Dots -->
+  <div class="hero-dots">
+    <button *ngFor="let s of slides; let i = index"
+            class="dot" [class.active]="currentSlide() === i"
+            (click)="goToSlide(i)" aria-label="Go to slide {{i+1}}"></button>
+  </div>
 
-    <!-- Prev / Next arrows -->
-    <div class="hero-arrows">
-        <label for="h4" class="arrow-btn" id="arr-prev-1">&#8592;</label>
-        <label for="h2" class="arrow-btn" id="arr-next-1">&#8594;</label>
-    </div>
+  <!-- Arrows -->
+  <button class="hero-arrow arrow-left"  (click)="prevSlide()" aria-label="Previous slide">&#8592;</button>
+  <button class="hero-arrow arrow-right" (click)="nextSlide()" aria-label="Next slide">&#8594;</button>
 </section>
 
-<section class="new-arrivals">
-    <div class="container">
-        <h3 class="section-title">New Arrival's</h3>
+<!-- ══════════════════════════════════════════════════════════════
+     FEATURE BANNER  (PTA / Warranty / Video / Delivery)
+══════════════════════════════════════════════════════════════ -->
+<section class="feature-banner page-container">
+  <div class="features">
 
-        <div class="arrivals-row">
-            <aside class="left-aside">
-                <div class="categories">
-                    <h4 class="cat-title">CATEGORIES</h4>
-                    <div class="category-state" *ngIf="categoriesLoading">Loading categories...</div>
-                    <div class="category-state error" *ngIf="categoriesError">{{categoriesError}}</div>
-                    <div class="category-state" *ngIf="!categoriesLoading && !categoriesError && categories.length === 0">No categories yet.</div>
-                    <ul *ngIf="categories.length > 0">
-                        <li *ngFor="let c of categories; let i = index" [class.open]="expanded[i]">
-                            <a [routerLink]="c.link" class="cat-link">
-                                <span class="icon">
-                                    <img *ngIf="isImageIcon(c.icon); else textIcon" [src]="c.icon" [alt]="c.name">
-                                    <ng-template #textIcon>{{c.icon}}</ng-template>
-                                </span>
-                                <span class="label">{{c.name}}</span>
-                            </a>
-                            <button class="toggle-btn" type="button" (click)="toggle(i, $event)" aria-label="Toggle {{c.name}}">
-                                <span class="caret">▾</span>
-                            </button>
-                            <div class="sub-items" role="menu" aria-hidden="{{!expanded[i]}}">
-                                <ng-container *ngIf="c.children?.length; else defaultSub">
-                                    <a *ngFor="let child of c.children" [routerLink]="child.link" role="menuitem">{{child.name}}</a>
-                                </ng-container>
-                                <ng-template #defaultSub>
-                                    <a [routerLink]="c.link" role="menuitem">View all {{c.name}}</a>
-                                    <a [routerLink]="c.link + '/top-deals'" role="menuitem">Top Deals</a>
-                                </ng-template>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-
-            </aside>
-
-            <div class="product-grid">
-                <a routerLink="/product/zte-nubia" class="product-link">
-                <article class="product-card">
-                    <img src="assets/images/s26.png" alt="ZTE Nubia">
-                    <div class="meta">
-                        <h5>ZTE Nubia Z50s Pro LCD Panel</h5>
-                        <p class="subtitle">ZTE LCD Panel Unit</p>
-                        <div class="rating">★★★★★</div>
-                        <p class="status muted">Available on Pre-Order</p>
-                        <div class="price"><span class="old">Rs 22,499</span> <span class="new">Rs 19,649</span></div>
-                    </div>
-                </article>
-                </a>
-
-                <a routerLink="/product/nokia-g300" class="product-link">
-                <article class="product-card">
-                    <img src="assets/images/s26.png" alt="Nokia G300">
-                    <div class="meta">
-                        <h5>Nokia G300 LCD Panel</h5>
-                        <p class="subtitle">Nokia LCD Panel Unit</p>
-                        <div class="rating">★★★★★</div>
-                        <p class="status muted">Available on Pre-Order</p>
-                        <div class="price"><span class="old">Rs 4,999</span> <span class="new">Rs 3,999</span></div>
-                    </div>
-                </article>
-                </a>
-
-                <a routerLink="/product/xiaomi-poco-x4" class="product-link">
-                <article class="product-card">
-                    <img src="assets/images/s26.png" alt="Xiaomi Poco">
-                    <div class="meta">
-                        <h5>Xiaomi Poco X4 Pro 5G LCD Panel</h5>
-                        <p class="subtitle">Xiaomi LCD Panel Unit</p>
-                        <div class="rating">★★★★★</div>
-                        <p class="status available">In stock</p>
-                        <div class="price"><span class="new">Rs 4,649</span></div>
-                    </div>
-                </article>
-                </a>
-
-                <a routerLink="/product/xiaomi-redmi-note11" class="product-link">
-                <article class="product-card">
-                    <img src="assets/images/s26.png" alt="Xiaomi Redmi">
-                    <div class="meta">
-                        <h5>Xiaomi Redmi Note 11 Pro Plus 5G LCD Panel</h5>
-                        <p class="subtitle">Xiaomi LCD Panel Unit</p>
-                        <div class="rating">★★★★★</div>
-                        <p class="status available">In stock</p>
-                        <div class="price"><span class="new">Rs 4,649</span></div>
-                    </div>
-                </article>
-                </a>
-            </div>
-        </div>
+    <div class="feature-card glass-card">
+      <div class="f-icon" style="background:rgba(37,99,235,0.18)">🛡️</div>
+      <div>
+        <h4>PTA Approved</h4>
+        <p>Certified Mobile Phone</p>
+      </div>
     </div>
+
+    <div class="feature-card glass-card">
+      <div class="f-icon" style="background:rgba(245,158,11,0.18)">🏆</div>
+      <div>
+        <h4>1 Year Warranty</h4>
+        <p>Official Brand Warranty</p>
+      </div>
+    </div>
+
+    <div class="feature-card glass-card">
+      <div class="f-icon" style="background:rgba(16,185,129,0.18)">📦</div>
+      <div>
+        <h4>Packaging Video</h4>
+        <p>See Your Product</p>
+      </div>
+    </div>
+
+    <div class="feature-card glass-card">
+      <div class="f-icon" style="background:rgba(124,58,237,0.18)">🚀</div>
+      <div>
+        <h4>Fast Delivery</h4>
+        <p>All Over Pakistan</p>
+      </div>
+    </div>
+
+  </div>
 </section>
+
+     CATEGORIES PANEL  (from store)
+══════════════════════════════════════════════════════════════ -->
+<section class="cat-section page-container alt-section" *ngIf="categories.length > 0">
+  <div class="section-header">
+    <h2>Shop by <span class="gradient-text">Category</span></h2>
+    <p>Find exactly what you're looking for</p>
+  </div>
+
+  <div class="cat-grid">
+    <a *ngFor="let c of categories; let i = index"
+       class="cat-pill glass-card"
+       [routerLink]="['/products']"
+       [queryParams]="{category: c.slug}">
+      <span class="cat-icon">
+        <img *ngIf="isImageIcon(c.icon); else textIcon" [src]="c.icon" [alt]="c.name">
+        <ng-template #textIcon>{{ c.icon }}</ng-template>
+      </span>
+      <span>{{ c.name }}</span>
+    </a>
+  </div>
+</section>
+<!-- ══════════════════════════════════════════════════════════════
+     SMARTPHONE BRANDS
+══════════════════════════════════════════════════════════════ -->
+<section class="brands-section page-container">
+  <div class="section-header">
+    <h2>Featured <span class="gradient-text">Smartphone Brands</span></h2>
+    <p>Shop from the world's most trusted manufacturers</p>
+  </div>
+
+  <!-- Inserted categories sidebar (sticky left) -->
+  <aside class="categories-sidebar" *ngIf="categories.length > 0" aria-label="Categories">
+    <div class="sidebar-inner glass-card">
+      <div class="sidebar-header">
+        <h3>Shop by <span class="gradient-text">Category</span></h3>
+      </div>
+
+      <nav class="sidebar-list">
+        <div *ngFor="let c of categories; let i = index" class="sidebar-item">
+          <div style="display:flex; align-items:center; gap:8px; width:100%;">
+            <a class="cat-link" [routerLink]="['/products']" [queryParams]="{category: c.slug}">
+              <span class="cat-icon">
+                <ng-container *ngIf="isImageIcon(c.icon); else textIcon">
+                  <img [src]="c.icon" [alt]="c.name">
+                </ng-container>
+                <ng-template #textIcon>{{ c.icon }}</ng-template>
+              </span>
+              <span class="cat-name">{{ c.name }}</span>
+            </a>
+            <button *ngIf="c.children?.length" class="expand-btn" (click)="toggle(i, $event)" [attr.aria-expanded]="expanded[i] ? true : false">{{ expanded[i] ? '−' : '+' }}</button>
+          </div>
+
+          <div *ngIf="expanded[i]" class="sidebar-children">
+            <a *ngFor="let ch of c.children" [routerLink]="['/products']" [queryParams]="{category: ch.slug}">{{ ch.name }}</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </aside>
+
+  <div class="brands-grid">
+    <div *ngFor="let brand of brands"
+         class="brand-card glass-card"
+         [routerLink]="['/products']"
+         [queryParams]="{category: brand.name}">
+      <div class="brand-logo-wrap" [style.background]="brand.color">
+        <span class="brand-logo">{{ brand.logo }}</span>
+      </div>
+      <h3>{{ brand.name }}</h3>
+      <p class="brand-model">{{ brand.popularModel }}</p>
+      <p class="brand-price">Starting from<br><strong>{{ brand.startingPrice }}</strong></p>
+      <span class="warranty-badge">✓ {{ brand.warranty }}</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SMART WATCH BRANDS
+══════════════════════════════════════════════════════════════ -->
+<section class="watches-section page-container alt-section">
+  <div class="section-header">
+    <h2>Premium <span class="gradient-text">Smart Watches</span></h2>
+    <p>Track your health and stay connected in style</p>
+  </div>
+
+  <div class="watches-grid">
+    <div *ngFor="let w of watches"
+         class="watch-card glass-card"
+         [routerLink]="['/products']"
+         [queryParams]="{category: 'Smart Watches'}">
+      <div class="watch-img-wrap">
+        <img [src]="w.image" [alt]="w.name" loading="lazy">
+      </div>
+      <h4>{{ w.name }}</h4>
+      <p class="watch-model">{{ w.model }}</p>
+      <div class="stars">
+        <span *ngFor="let s of stars5" class="star" [class.filled]="s <= w.rating">★</span>
+      </div>
+      <div class="watch-price">{{ w.price }}</div>
+      <span class="warranty-badge">✓ {{ w.warranty }}</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     BEST SELLING PRODUCTS
+══════════════════════════════════════════════════════════════ -->
+<section class="products-section page-container">
+  <div class="section-header">
+    <h2>Best <span class="gradient-text">Selling Products</span></h2>
+    <p>Top-rated devices loved by thousands of customers</p>
+  </div>
+
+  <div class="products-grid">
+    <div *ngFor="let p of products()"
+         class="product-card glass-card"
+         [routerLink]="['/product', p.id]">
+
+      <div class="product-img-wrap">
+        <img [src]="p.image" [alt]="p.name" loading="lazy">
+        <span *ngIf="p.discount" class="discount-badge">-{{ p.discount }}%</span>
+        <button class="wishlist-btn"
+                [class.active]="p.wishlisted"
+                (click)="toggleWishlist(p); $event.stopPropagation()"
+                aria-label="Wishlist">
+          {{ p.wishlisted ? '❤️' : '🤍' }}
+        </button>
+      </div>
+
+      <div class="product-body">
+        <span class="product-cat">{{ p.category }}</span>
+        <div class="product-name">{{ p.name }}</div>
+        <div class="product-rating">
+          <span *ngFor="let s of stars5" class="star" [class.filled]="s <= p.rating">★</span>
+          <span class="review-count">({{ p.reviews }})</span>
+        </div>
+        <div class="product-prices">
+          <span class="price-new">{{ formatPrice(p.price) }}</span>
+          <span *ngIf="p.oldPrice" class="price-old">{{ formatPrice(p.oldPrice) }}</span>
+        </div>
+        <button class="btn-add-cart" (click)="$event.stopPropagation()">🛒 Add to Cart</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section-footer">
+    <button class="btn-primary" routerLink="/products">View All Products →</button>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+ 
+
+      WARRANTY & GUARANTEE
+══════════════════════════════════════════════════════════════ -->
+<section class="warranty-section page-container">
+  <div class="warranty-inner glass-card">
+    <div class="warranty-text">
+      <h2>Why Shop <span class="gradient-text">With Us?</span></h2>
+      <p>We are Pakistan's most trusted premium electronics retailer. Every product we sell comes with an official brand warranty, genuine certification, and our 30-day happiness guarantee.</p>
+      <button class="btn-primary" routerLink="/Contact">Contact Us</button>
+    </div>
+    <div class="warranty-features">
+      <div class="w-feat">
+        <span class="w-icon">🏆</span>
+        <div>
+          <strong>Official Brand Warranty</strong>
+          <p>Full 1-year manufacturer warranty included with every device.</p>
+        </div>
+      </div>
+      <div class="w-feat">
+        <span class="w-icon">✅</span>
+        <div>
+          <strong>Genuine Products</strong>
+          <p>100% authentic products sourced directly from brand distributors.</p>
+        </div>
+      </div>
+      <div class="w-feat">
+        <span class="w-icon">🔄</span>
+        <div>
+          <strong>Easy Replacement</strong>
+          <p>Hassle-free 7-day replacement policy on all products.</p>
+        </div>
+      </div>
+      <div class="w-feat">
+        <span class="w-icon">🔐</span>
+        <div>
+          <strong>Secure Payments</strong>
+          <p>Encrypted checkout with multiple secure payment options.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     CUSTOMER REVIEWS
+══════════════════════════════════════════════════════════════ -->
+<section class="reviews-section page-container alt-section">
+  <div class="section-header">
+    <h2>Customer <span class="gradient-text">Reviews</span></h2>
+    <p>See what thousands of happy customers say about us</p>
+  </div>
+
+  <div class="reviews-wrap">
+    <div *ngFor="let r of reviews; let i = index"
+         class="review-card glass-card"
+         [class.review-active]="currentReview() === i">
+      <div class="review-header">
+        <span class="review-avatar">{{ r.avatar }}</span>
+        <div>
+          <strong>{{ r.name }}</strong>
+          <div class="review-date">{{ r.date }}</div>
+        </div>
+      </div>
+      <div class="stars small">
+        <span *ngFor="let s of stars5" class="star" [class.filled]="s <= r.rating">★</span>
+      </div>
+      <p class="review-text">"{{ r.text }}"</p>
+    </div>
+  </div>
+
+  <div class="review-dots">
+    <button *ngFor="let r of reviews; let i = index"
+            class="dot" [class.active]="currentReview() === i"
+            (click)="goToReview(i)" aria-label="Review {{i+1}}"></button>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     NEWSLETTER
+══════════════════════════════════════════════════════════════ -->
+<section class="newsletter-section page-container">
+  <div class="newsletter-card glass-card">
+    <div class="nl-icon">📧</div>
+    <h2>Stay in the <span class="gradient-text">Loop</span></h2>
+    <p>Subscribe for exclusive deals, new arrivals & tech news — delivered to your inbox.</p>
+    <div *ngIf="!nlSuccess" class="nl-form">
+      <input type="email" placeholder="Enter your email address" [(ngModel)]="nlEmail" (keyup.enter)="subscribeNewsletter()">
+      <button class="btn-primary" (click)="subscribeNewsletter()">Subscribe</button>
+    </div>
+    <div *ngIf="nlSuccess" class="nl-success">
+      🎉 You're subscribed! Check your inbox for a welcome offer.
+    </div>
+  </div>
+</section>
+
+ 

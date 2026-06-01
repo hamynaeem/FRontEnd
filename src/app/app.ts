@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { CartService } from './components/services/cart.service';
 import { SnackbarService } from './components/shared/snackbar.service';
+import { AdminSettings, updateAdminSettings } from './components/stores/admin-store';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,15 @@ export class App implements OnDestroy {
   public navOpen = false;
   private _routerSub: Subscription | null = null;
   private _outsideClickHandler: ((ev: Event) => void) | null = null;
+
+   // example contact data (from provided design)
+  sampleContact: Partial<AdminSettings> = {
+    storeName: 'TechZone',
+    phone: '+92 300 123 4567',
+    city: 'Lahore',
+    country: 'Pakistan',
+    email: 'info@techzone.pk',
+  };
 
   constructor(private router: Router, private snackbarSvc: SnackbarService) {
     const initialUrl = this.router.url || '/';
@@ -100,6 +110,7 @@ openOrders(){
     this.showSettingsMenu = false;
     try { this.router.navigate(['/notifications']); } catch {}
   }
+  
 
   logout(){
     this.showSettingsMenu = false;
@@ -110,4 +121,19 @@ openOrders(){
     this.snackbarSvc.show('You have been logged out', { type: 'info', duration: 2200 });
     try { this.router.navigate(['/Home']); } catch {}
   }
+   loadSampleContact() {
+      this.snackbarSvc.show('Sample contact loaded into form — review and Save', { type: 'info', duration: 2500 });
+    }
+  
+    replaceWithSampleContact() {
+      updateAdminSettings(this.sampleContact as Partial<AdminSettings>).subscribe({
+        next: (s) => {
+          this.snackbarSvc.show('Settings replaced with sample contact', { type: 'success', duration: 2500 });
+        },
+        error: (err) => {
+          console.error(err);
+          this.snackbarSvc.show('Failed to replace settings', { type: 'error', duration: 2500 });
+        },
+      });
+    }
 }

@@ -50,8 +50,8 @@ export const routes: Routes = [
       loadComponent: () => import('./components/smartwatches/smartwatches').then(m => m.Smartwatches)
     },
     {
-      path: 'smartphones',
-      loadComponent: () => import('./components/smartphones/smartphones').then(m => m.Smartphones)
+      path: 'products',
+      loadComponent: () => import('./components/products/products').then(m => m.Products)
     },
     {
       path: 'track',

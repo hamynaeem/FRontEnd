@@ -80,15 +80,18 @@
       </ul>
     </div>
 
-    <div class="footer-col">
-      <h5>Contact</h5>
-      <ul class="contact-list">
-        <li>📍 Lahore, Pakistan</li>
-        <li>📞 <a href="tel:+923001234567">+92 300 123 4567</a></li>
-        <li>✉️ <a href="mailto:info@techzone.pk">info&#64;techzone.pk</a></li>
-        <li>🕐 Mon–Sat: 10am – 8pm</li>
-      </ul>
-    </div>
+    <div *ngIf="settings" class="card store-info-card">
+		<h3>{{ settings.storeName || settings.name }}</h3>
+		<ul class="contact-list">
+			<li *ngIf="settings.city || settings.country"><span class="icon">📍</span> {{ settings.city }}<span *ngIf="settings.city && settings.country">, </span>{{ settings.country }}</li>
+			<li *ngIf="settings.phone"><span class="icon">📞</span> {{ settings.phone }}</li>
+			<li *ngIf="settings.email"><span class="icon">✉️</span> {{ settings.email }}</li>
+		</ul>
+		<div class="store-info-actions">
+			<button type="button" class="small-btn" (click)="loadSampleContact()">Load into form</button>
+			<button type="button" class="btn" (click)="replaceWithSampleContact()">Replace now</button>
+		</div>
+	</div>
   </div>
 
   <div class="footer-bottom">

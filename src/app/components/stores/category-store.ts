@@ -1,4 +1,6 @@
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, throwError, from } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 export interface Category {
   id: number;
@@ -43,6 +45,34 @@ function getNextId(): number {
 
 export function getCategories(): Observable<Category[]> {
   return of(readAll());
+}
+
+export function fetchCategories(): Observable<Category[]> {
+  ensureInit();
+  // If `useApi` is explicitly disabled in environment, return local store immediately
+  if ((environment as any).useApi === false) {
+    console.info('category-store: useApi disabled, returning local categories');
+    return of(readAll());
+  }
+
+  const base = environment && (environment as any).apiBaseUrl;
+  if (!base) {
+    return of(readAll());
+  }
+
+  const url = `${base.replace(/\/$/, '')}/categories`;
+  return from(fetch(url).then(async (res) => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (Array.isArray(data)) return data as Category[];
+    if (data && Array.isArray((data as any).data)) return (data as any).data as Category[];
+    return readAll();
+  })).pipe(
+    catchError((err) => {
+      console.warn('fetchCategories failed, falling back to local store', err);
+      return of(readAll());
+    })
+  );
 }
 
 export function createCategory(payload: { name: string; icon?: string; parent?: string }): Observable<Category> {

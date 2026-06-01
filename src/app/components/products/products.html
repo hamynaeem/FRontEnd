@@ -1,0 +1,60 @@
+<section class="smartphones-list container">
+	<header class="list-header">
+		<h2 *ngIf="categoryName">Products — {{ categoryName }}</h2>
+		<h2 *ngIf="!categoryName">Price List of Samsung Mobiles in Pakistan</h2>
+		<p class="lead" *ngIf="categoryName">Showing {{ products.length }} products in {{ categoryName }}.</p>
+		<p class="lead" *ngIf="!categoryName">Showing you {{ products.length }} Samsung Mobiles Prices in Pakistan. Priceoye helps you find the lowest online Prices.</p>
+	</header>
+
+	<div class="list-body">
+		<aside class="filters">
+			<div class="filter-block">
+				<h4>Sorting</h4>
+				<label><input type="checkbox"> Popularity</label>
+				<label><input type="checkbox"> Prices (Low to High)</label>
+				<label><input type="checkbox"> Prices (High to Low)</label>
+			</div>
+			<div class="filter-block">
+				<h4>Express Delivery</h4>
+				<label><input type="checkbox"> Express Delivery</label>
+			</div>
+			<div class="filter-block">
+				<h4>In Stock</h4>
+				<label><input type="checkbox"> In Stock</label>
+			</div>
+			<div class="filter-block">
+				<h4>Price Range</h4>
+				<button class="price-range">Below Rs 15,000</button>
+				<button class="price-range">Rs 15,000 - Rs 25,000</button>
+			</div>
+		</aside>
+
+		<main class="grid">
+			<article class="product-card" *ngFor="let p of products" [routerLink]="['/product', p.id]">
+				<img [src]="p.img" [alt]="p.title">
+				<div class="card-meta">
+					<div class="card-header">
+						<div class="rating">★ {{p.rating}} {{p.reviews}} Reviews</div>
+						<div class="card-actions">
+							<button class="specs-btn" (click)="toggleSpecs(p.id); $event.stopPropagation()" aria-expanded="{{ isSpecsOpen(p.id) }}">Specs</button>
+						</div>
+					</div>
+					<h4>{{p.title}}</h4>
+					<div class="price">Rs <strong>{{p.price | number}}</strong> <span class="badge">{{p.badge}}</span></div>
+				</div>
+
+				<div class="product-specs" *ngIf="isSpecsOpen(p.id)">
+					<ul>
+						<li *ngIf="p.specs?.ram">RAM: {{p.specs.ram}}</li>
+						<li *ngIf="p.specs?.rom">ROM: {{p.specs.rom}}</li>
+						<li *ngIf="p.specs?.battery">Battery: {{p.specs.battery}}</li>
+						<li *ngIf="p.specs?.display">Display: {{p.specs.display}}</li>
+						<li *ngIf="p.specs?.camera">Camera: {{p.specs.camera}}</li>
+						<li *ngIf="p.specs?.processor">Processor: {{p.specs.processor}}</li>
+						<li *ngIf="p.specs?.other">{{p.specs.other}}</li>
+					</ul>
+				</div>
+			</article>
+		</main>
+	</div>
+</section>

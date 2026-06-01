@@ -301,3 +301,40 @@
 	height: 1rem;
 	display: inline-block
 }
+
+/* Compare modal */
+.pd-compare {
+	position: fixed;
+	inset: 0;
+	background: rgba(2,6,23,0.55);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1500;
+}
+
+.pd-compare-inner {
+	width: 92%;
+	max-width: 940px;
+	background: #fff;
+	padding: 18px;
+	border-radius: 12px;
+	box-shadow: 0 20px 60px rgba(6,22,37,0.12);
+	position: relative;
+}
+
+.pd-compare-inner h3 { margin: 0 0 12px }
+
+.compare-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin: 12px 0 }
+.candidate { display:flex; gap:10px; align-items:center; padding:8px; border-radius:10px; border:1px solid #eef2ff; cursor:pointer }
+.candidate img { width:64px; height:64px; object-fit:contain; border-radius:8px }
+.candidate .meta { display:flex; flex-direction:column }
+.candidate .title { font-weight:700 }
+.candidate input { margin-right:6px }
+
+.compare-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:12px }
+
+.compare-table { width:100%; border-collapse:collapse; margin-top:12px }
+.compare-table th, .compare-table td { padding:8px 10px; border:1px solid #eef2ff; text-align:left }
+.compare-table th { background:#f8fafc }
+.compare-table tr.diff td { background: linear-gradient(90deg, rgba(255,243,230,0.6), rgba(255,243,230,0.2)) }
