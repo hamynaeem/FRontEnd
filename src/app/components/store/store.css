@@ -216,6 +216,19 @@
 	background: var(--card);
 }
 
+.state-text {
+	padding: 14px;
+	border-radius: 10px;
+	background: rgba(255, 255, 255, 0.55);
+	color: rgba(17, 24, 39, 0.9);
+	font-weight: 600;
+}
+
+.state-text.error {
+	color: #b91c1c;
+	background: rgba(254, 226, 226, 0.85);
+}
+
 /* Card actions and buttons */
 .card-actions {
 	display: flex;
@@ -283,17 +296,19 @@
 
 @media(max-width:480px) {
 	.product-grid {
-		grid-template-columns: 1fr
+		grid-template-columns: repeat(2, minmax(0, 1fr))
 	}
 
 	.product-card {
-		flex-direction: row;
-		gap: 12px
+		flex-direction: column;
+		gap: 10px;
+		text-align: center;
+		min-height: 240px;
 	}
 
 	.product-card img {
-		width: 88px;
-		height: 88px
+		width: 90px;
+		height: 90px
 	}
 }
 
@@ -368,24 +383,25 @@
 	.product-grid {
 		gap: 14px;
 		perspective: none;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
 	.product-card {
-		flex-direction: row;
+		flex-direction: column;
 		align-items: center;
 		padding: 12px;
-		min-height: 96px;
-		text-align: left;
+		min-height: 230px;
+		text-align: center;
 	}
 
 	.product-card img {
-		width: 88px;
-		height: 88px;
+		width: 82px;
+		height: 82px;
 		margin: 0;
 	}
 
 	.product-card .meta {
-		align-items: flex-start;
+		align-items: center;
 		gap: 4px;
 	}
 
@@ -399,25 +415,27 @@
 	}
 
 	.card-actions {
-		justify-content: flex-start;
+		justify-content: center;
 		gap: 8px;
-		width: auto;
+		width: 100%;
+		flex-direction: column;
 	}
 
 	.card-actions .btn {
-		padding: 10px 12px;
-		font-size: 0.95rem;
-		border-radius: 10px;
+		padding: 9px 10px;
+		font-size: 0.85rem;
+		border-radius: 9px;
+		width: 100%;
 	}
 
 	.btn.primary {
-		padding: 12px 14px;
-		border-radius: 12px;
+		padding: 9px 10px;
+		border-radius: 9px;
 	}
 
 	.btn.outline {
-		padding: 12px 14px;
-		border-radius: 12px;
+		padding: 9px 10px;
+		border-radius: 9px;
 	}
 
 	.product-card>* {
@@ -436,9 +454,13 @@
 }
 
 @media (max-width:360px) {
+	.product-grid {
+		grid-template-columns: 1fr;
+	}
+
 	.product-card {
 		padding: 10px;
-		min-height: 88px;
+		min-height: 210px;
 		gap: 8px;
 	}
 
@@ -462,6 +484,12 @@
 
 	.product-grid {
 		gap: 12px;
+	}
+}
+
+@media (max-width:380px) {
+	.product-grid {
+		grid-template-columns: 1fr;
 	}
 }
 

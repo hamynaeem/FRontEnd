@@ -19,6 +19,7 @@
 /* ── Host wrapper ──────────────────────────────────────────── */
 :host {
 	display: block;
+	overflow-x: clip;
 }
 
 .page-container {
@@ -51,6 +52,7 @@
 .section-header h2 {
 	font-size: clamp(1.8rem, 4vw, 2.8rem);
 	font-weight: 800;
+	color: #fff;
 }
 
 .section-header p {
@@ -357,6 +359,7 @@
 	font-size: 0.95rem;
 	font-weight: 700;
 	margin-bottom: 4px;
+	color: #fff;
 }
 
 .feature-card p {
@@ -686,6 +689,12 @@
 	transition: transform 0.2s, background 0.2s;
 	font-size: 0.95rem;
 	font-weight: 600;
+	color: #fff !important;
+	text-decoration: none;
+}
+
+.cat-pill span {
+	color: #fff !important;
 }
 
 .cat-pill:hover {
@@ -706,6 +715,7 @@
 /* ── WARRANTY ─────────────────────────────────────────────────── */
 .warranty-section {
 	padding: var(--section-pad);
+	padding-top: 56px;
 }
 
 .warranty-inner {
@@ -713,6 +723,7 @@
 	gap: 60px;
 	align-items: center;
 	padding: 60px 50px;
+	background: rgba(255, 255, 255, 0.09);
 }
 
 .warranty-text {
@@ -723,10 +734,12 @@
 	font-size: 2rem;
 	font-weight: 800;
 	margin-bottom: 16px;
+	color: #fff !important;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.28);
 }
 
 .warranty-text p {
-	color: rgba(255, 255, 255, 0.65);
+	color: #fff !important;
 	margin-bottom: 28px;
 	font-size: 1.05rem;
 	line-height: 1.6;
@@ -754,11 +767,12 @@
 	display: block;
 	font-size: 0.95rem;
 	margin-bottom: 4px;
+	color: #fff !important;
 }
 
 .w-feat p {
 	font-size: 0.82rem;
-	color: rgba(255, 255, 255, 0.5);
+	color: #fff !important;
 }
 
 /* ── REVIEWS ──────────────────────────────────────────────────── */
@@ -1041,18 +1055,59 @@
 		--section-pad: 50px 0;
 	}
 
+	.page-container {
+		padding: 0 16px;
+	}
+
+	.btn-primary,
+	.btn-ghost {
+		padding: 12px 22px;
+		font-size: 0.92rem;
+	}
+
+	.hero {
+		min-height: 520px;
+	}
+
 	.hero-slide {
 		flex-direction: column;
 		padding: 60px 20px 90px;
 		text-align: center;
+		gap: 28px;
+	}
+
+	.hero-content p {
+		font-size: 1rem;
+		margin-bottom: 24px;
 	}
 
 	.hero-btns {
 		justify-content: center;
+		gap: 12px;
 	}
 
 	.hero-visual {
 		display: none;
+	}
+
+	.hero-arrow {
+		top: auto;
+		bottom: 22px;
+		transform: none;
+		width: 40px;
+		height: 40px;
+	}
+
+	.arrow-left {
+		left: 12px;
+	}
+
+	.arrow-right {
+		right: 12px;
+	}
+
+	.hero-dots {
+		bottom: 18px;
 	}
 
 	.features {
@@ -1067,6 +1122,10 @@
 	.warranty-inner {
 		flex-direction: column;
 		padding: 36px 28px;
+	}
+
+	.warranty-section {
+		padding-top: 34px;
 	}
 
 	.warranty-features {
@@ -1097,6 +1156,84 @@
 }
 
 @media (max-width: 480px) {
+	.page-container {
+		padding: 0 12px;
+	}
+
+	.hero {
+		min-height: 470px;
+	}
+
+	.hero-slide {
+		padding: 48px 12px 78px;
+	}
+
+	.hero-content h1 {
+		font-size: clamp(1.55rem, 8vw, 2rem);
+		line-height: 1.2;
+	}
+
+	.hero-content p {
+		font-size: 0.92rem;
+	}
+
+	.hero-btns {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.hero-btns .btn-primary,
+	.hero-btns .btn-ghost {
+		justify-content: center;
+		width: 100%;
+	}
+
+	.section-header {
+		margin-bottom: 28px;
+	}
+
+	.section-header p {
+		font-size: 0.95rem;
+	}
+
+	.feature-card {
+		padding: 16px 14px;
+	}
+
+	.f-icon {
+		width: 44px;
+		height: 44px;
+		font-size: 1.3rem;
+	}
+
+	.warranty-inner,
+	.newsletter-card,
+	.review-card {
+		padding: 22px 16px;
+	}
+
+	.warranty-section {
+		padding-top: 24px;
+	}
+
+	.cat-pill {
+		padding: 14px;
+		font-size: 0.88rem;
+	}
+
+	.newsletter-card h2,
+	.warranty-text h2 {
+		font-size: 1.5rem;
+	}
+
+	.newsletter-card > p {
+		margin-bottom: 20px;
+	}
+
+	.hero-arrow {
+		display: none;
+	}
+
 	.features {
 		grid-template-columns: 1fr;
 	}
@@ -1154,5 +1291,87 @@
 @media(max-width:480px) {
 	.features {
 		grid-template-columns: 1fr;
+	}
+}
+
+/* ── SIMPLE UI REFRESH ─────────────────────────────────────── */
+.hero {
+	background: linear-gradient(180deg, rgba(13, 30, 61, 0.9), rgba(6, 18, 39, 0.95));
+}
+
+.hero-orb {
+	opacity: 0.2;
+	filter: blur(95px);
+}
+
+.glass-card {
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.16);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	box-shadow: 0 10px 24px rgba(2, 6, 23, 0.24);
+}
+
+.btn-primary,
+.btn-ghost,
+.btn-add-cart {
+	border-radius: 12px;
+	box-shadow: none;
+	font-weight: 700;
+	transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-ghost:hover,
+.btn-add-cart:hover {
+	transform: translateY(-1px);
+}
+
+.btn-ghost {
+	background: rgba(255, 255, 255, 0.08);
+	border-color: rgba(255, 255, 255, 0.22);
+}
+
+.section-header p,
+.hero-content p,
+.newsletter-card > p,
+.feature-card p,
+.review-date,
+.review-text {
+	color: rgba(255, 255, 255, 0.8);
+}
+
+.feature-card,
+.cat-pill,
+.review-card,
+.newsletter-card,
+.warranty-inner {
+	border-radius: 14px;
+}
+
+.feature-card:hover,
+.cat-pill:hover,
+.product-card:hover,
+.brand-card:hover,
+.watch-card:hover {
+	transform: translateY(-2px);
+}
+
+.hero-arrow {
+	background: rgba(255, 255, 255, 0.14);
+	border-color: rgba(255, 255, 255, 0.28);
+}
+
+.dot {
+	background: rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 768px) {
+	.hero {
+		background: linear-gradient(180deg, rgba(13, 30, 61, 0.92), rgba(5, 16, 36, 0.98));
+	}
+
+	.section-header p {
+		font-size: 0.98rem;
 	}
 }

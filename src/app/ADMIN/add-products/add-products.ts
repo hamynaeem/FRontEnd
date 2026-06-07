@@ -71,14 +71,7 @@ export class AddProducts implements OnInit {
       return;
     }
 
-    const specs = {
-      ram: (this.model.specs?.ram || '').trim() || undefined,
-      rom: (this.model.specs?.rom || '').trim() || undefined,
-      battery: (this.model.specs?.battery || '').trim() || undefined,
-      display: (this.model.specs?.display || '').trim() || undefined,
-      camera: (this.model.specs?.camera || '').trim() || undefined,
-      processor: (this.model.specs?.processor || '').trim() || undefined,
-    };
+  
 
     const payload: ProductPayload = {
       name,
@@ -86,7 +79,7 @@ export class AddProducts implements OnInit {
       category: (this.model.category || '').trim() || undefined,
       description: (this.model.description || '').trim() || undefined,
       image: (this.model.image || '').trim() || undefined,
-      specs
+       
     };
 
     if(this.editingId){

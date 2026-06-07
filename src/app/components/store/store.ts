@@ -1,5 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { getProducts, Product as StoreProduct } from '../stores/product-store';
+
+interface StoreCardProduct {
+  id: number;
+  title: string;
+  subtitle: string;
+  image: string;
+  rating: number;
+  status: string;
+  oldPrice?: number;
+  price: number;
+}
 
 @Component({
   selector: 'app-store',
@@ -8,23 +20,74 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./store.css'],
   imports: [CommonModule]
 })
-export class Store {
-  products = [
-    { id: 1, title: 'ZTE Nubia Z50s Pro LCD Panel', subtitle: 'ZTE LCD Panel Unit', image: 'assets/images/s26.png', rating: 5, status: 'preorder', oldPrice: 22499, price: 19649 },
-    { id: 2, title: 'Nokia G300 LCD Panel', subtitle: 'Nokia LCD Panel Unit', image: 'assets/images/s26.png', rating: 5, status: 'preorder', oldPrice: 4999, price: 3999 },
-    { id: 3, title: 'Xiaomi Poco X4 Pro 5G LCD Panel', subtitle: 'Xiaomi LCD Panel Unit', image: 'assets/images/s26.png', rating: 5, status: 'in-stock', price: 4649 },
-    { id: 4, title: 'Xiaomi Redmi Note 11 Pro Plus 5G LCD Panel', subtitle: 'Xiaomi LCD Panel Unit', image: 'assets/images/s26.png', rating: 5, status: 'in-stock', price: 4649 },
-    { id: 5, title: 'Xiaomi Redmi Note 11 Pro Plus 5G LCD Panel', subtitle: 'Xiaomi LCD Panel Unit', image: 'assets/images/s26.png', rating: 5, status: 'in-stock', price: 4649 },
-    { id: 6, title: 'Xiaomi Redmi Note 11 Pro Plus 5G LCD Panel', subtitle: 'Xiaomi LCD Panel Unit', image: 'assets/images/s26.png', rating: 5, status: 'in-stock', price: 4649 },
-    { id: 7, title: 'Xiaomi Redmi Note 11 Pro Plus 5G LCD Panel', subtitle: 'Xiaomi LCD Panel Unit', image: 'assets/images/s26.png', rating: 5, status: 'in-stock', price: 4649 },
-    { id: 8, title: 'Xiaomi Redmi Note 11 Pro Plus 5G LCD Panel', subtitle: 'Xiaomi LCD Panel Unit', image: 'assets/images/s26.png', rating: 5, status: 'in-stock', price: 4649 },
-    { id: 9, title: 'Xiaomi Redmi Note 11 Pro Plus 5G LCD Panel', subtitle: 'Xiaomi LCD Panel Unit', image: 'assets/images/s26.png', rating: 5, status: 'in-stock', price: 4649 },
-    { id: 10, title: 'Xiaomi Redmi Note 11 Pro Plus 5G LCD Panel', subtitle: 'Xiaomi LCD Panel Unit', image: 'assets/images/s26.png', rating: 5, status: 'in-stock', price: 4649 },
-    { id: 11, title: 'Xiaomi Redmi Note 11 Pro Plus 5G LCD Panel', subtitle: 'Xiaomi LCD Panel Unit', image: 'assets/images/s26.png', rating: 5, status: 'in-stock', price: 4649 },
-    { id: 12, title: 'Xiaomi Redmi Note 11 Pro Plus 5G LCD Panel', subtitle: 'Xiaomi LCD Panel Unit', image: 'assets/images/s26.png', rating: 5, status: 'in-stock', price: 4649 }
-  ];
+export class Store implements OnInit {
+  products: StoreCardProduct[] = [];
+  private allProducts: StoreCardProduct[] = [];
+  searchTerm = '';
+  sortBy: 'popular' | 'new' | 'price-asc' | 'price-desc' = 'popular';
+  loading = false;
+  error = '';
 
   constructor() {}
+
+  ngOnInit(): void {
+    this.loadProducts();
+  }
+
+  private loadProducts(): void {
+    this.loading = true;
+    this.error = '';
+    getProducts().subscribe({
+      next: (items: StoreProduct[]) => {
+        this.allProducts = items.map((p) => ({
+          id: p.id,
+          title: (p.title || p.name || '').trim() || 'Untitled Product',
+          subtitle: p.subtitle || p.description || `${p.category || 'General'} Product`,
+          image: p.image || 'assets/images/s26.png',
+          rating: Math.max(1, Math.min(5, Number(p.rating) || 5)),
+          status: p.status || (p.available === false ? 'out-of-stock' : 'in-stock'),
+          oldPrice: p.old_price,
+          price: Number(p.price) || 0
+        }));
+        this.applyFilters();
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.products = [];
+        this.error = 'Failed to load products';
+      }
+    });
+  }
+
+  onSearch(value: string): void {
+    this.searchTerm = value || '';
+    this.applyFilters();
+  }
+
+  onSortChange(value: string): void {
+    if (value === 'new' || value === 'price-asc' || value === 'price-desc' || value === 'popular') {
+      this.sortBy = value;
+      this.applyFilters();
+    }
+  }
+
+  private applyFilters(): void {
+    const term = this.searchTerm.toLowerCase().trim();
+    let items = this.allProducts.filter((p) => {
+      if (!term) return true;
+      return p.title.toLowerCase().includes(term) || p.subtitle.toLowerCase().includes(term);
+    });
+
+    items = [...items].sort((a, b) => {
+      if (this.sortBy === 'price-asc') return a.price - b.price;
+      if (this.sortBy === 'price-desc') return b.price - a.price;
+      if (this.sortBy === 'new') return b.id - a.id;
+      return b.rating - a.rating;
+    });
+
+    this.products = items;
+  }
 
   onCardEnter(card: HTMLElement | null) {
     if (!card) return;

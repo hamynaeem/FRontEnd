@@ -85,6 +85,7 @@
   </div>
 </section>
 
+<!-- ══════════════════════════════════════════════════════════════
      CATEGORIES PANEL  (from store)
 ══════════════════════════════════════════════════════════════ -->
 <section class="cat-section page-container alt-section" *ngIf="categories.length > 0">
@@ -106,135 +107,11 @@
     </a>
   </div>
 </section>
-<!-- ══════════════════════════════════════════════════════════════
-     SMARTPHONE BRANDS
-══════════════════════════════════════════════════════════════ -->
-<section class="brands-section page-container">
-  <div class="section-header">
-    <h2>Featured <span class="gradient-text">Smartphone Brands</span></h2>
-    <p>Shop from the world's most trusted manufacturers</p>
-  </div>
+ 
 
-  <!-- Inserted categories sidebar (sticky left) -->
-  <aside class="categories-sidebar" *ngIf="categories.length > 0" aria-label="Categories">
-    <div class="sidebar-inner glass-card">
-      <div class="sidebar-header">
-        <h3>Shop by <span class="gradient-text">Category</span></h3>
-      </div>
+ 
 
-      <nav class="sidebar-list">
-        <div *ngFor="let c of categories; let i = index" class="sidebar-item">
-          <div style="display:flex; align-items:center; gap:8px; width:100%;">
-            <a class="cat-link" [routerLink]="['/products']" [queryParams]="{category: c.slug}">
-              <span class="cat-icon">
-                <ng-container *ngIf="isImageIcon(c.icon); else textIcon">
-                  <img [src]="c.icon" [alt]="c.name">
-                </ng-container>
-                <ng-template #textIcon>{{ c.icon }}</ng-template>
-              </span>
-              <span class="cat-name">{{ c.name }}</span>
-            </a>
-            <button *ngIf="c.children?.length" class="expand-btn" (click)="toggle(i, $event)" [attr.aria-expanded]="expanded[i] ? true : false">{{ expanded[i] ? '−' : '+' }}</button>
-          </div>
-
-          <div *ngIf="expanded[i]" class="sidebar-children">
-            <a *ngFor="let ch of c.children" [routerLink]="['/products']" [queryParams]="{category: ch.slug}">{{ ch.name }}</a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </aside>
-
-  <div class="brands-grid">
-    <div *ngFor="let brand of brands"
-         class="brand-card glass-card"
-         [routerLink]="['/products']"
-         [queryParams]="{category: brand.name}">
-      <div class="brand-logo-wrap" [style.background]="brand.color">
-        <span class="brand-logo">{{ brand.logo }}</span>
-      </div>
-      <h3>{{ brand.name }}</h3>
-      <p class="brand-model">{{ brand.popularModel }}</p>
-      <p class="brand-price">Starting from<br><strong>{{ brand.startingPrice }}</strong></p>
-      <span class="warranty-badge">✓ {{ brand.warranty }}</span>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════════════
-     SMART WATCH BRANDS
-══════════════════════════════════════════════════════════════ -->
-<section class="watches-section page-container alt-section">
-  <div class="section-header">
-    <h2>Premium <span class="gradient-text">Smart Watches</span></h2>
-    <p>Track your health and stay connected in style</p>
-  </div>
-
-  <div class="watches-grid">
-    <div *ngFor="let w of watches"
-         class="watch-card glass-card"
-         [routerLink]="['/products']"
-         [queryParams]="{category: 'Smart Watches'}">
-      <div class="watch-img-wrap">
-        <img [src]="w.image" [alt]="w.name" loading="lazy">
-      </div>
-      <h4>{{ w.name }}</h4>
-      <p class="watch-model">{{ w.model }}</p>
-      <div class="stars">
-        <span *ngFor="let s of stars5" class="star" [class.filled]="s <= w.rating">★</span>
-      </div>
-      <div class="watch-price">{{ w.price }}</div>
-      <span class="warranty-badge">✓ {{ w.warranty }}</span>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════════════
-     BEST SELLING PRODUCTS
-══════════════════════════════════════════════════════════════ -->
-<section class="products-section page-container">
-  <div class="section-header">
-    <h2>Best <span class="gradient-text">Selling Products</span></h2>
-    <p>Top-rated devices loved by thousands of customers</p>
-  </div>
-
-  <div class="products-grid">
-    <div *ngFor="let p of products()"
-         class="product-card glass-card"
-         [routerLink]="['/product', p.id]">
-
-      <div class="product-img-wrap">
-        <img [src]="p.image" [alt]="p.name" loading="lazy">
-        <span *ngIf="p.discount" class="discount-badge">-{{ p.discount }}%</span>
-        <button class="wishlist-btn"
-                [class.active]="p.wishlisted"
-                (click)="toggleWishlist(p); $event.stopPropagation()"
-                aria-label="Wishlist">
-          {{ p.wishlisted ? '❤️' : '🤍' }}
-        </button>
-      </div>
-
-      <div class="product-body">
-        <span class="product-cat">{{ p.category }}</span>
-        <div class="product-name">{{ p.name }}</div>
-        <div class="product-rating">
-          <span *ngFor="let s of stars5" class="star" [class.filled]="s <= p.rating">★</span>
-          <span class="review-count">({{ p.reviews }})</span>
-        </div>
-        <div class="product-prices">
-          <span class="price-new">{{ formatPrice(p.price) }}</span>
-          <span *ngIf="p.oldPrice" class="price-old">{{ formatPrice(p.oldPrice) }}</span>
-        </div>
-        <button class="btn-add-cart" (click)="$event.stopPropagation()">🛒 Add to Cart</button>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="section-footer">
-    <button class="btn-primary" routerLink="/products">View All Products →</button>
-  </div>
-</section>
+ 
 
 <!-- ══════════════════════════════════════════════════════════════
  
@@ -249,13 +126,7 @@
       <button class="btn-primary" routerLink="/Contact">Contact Us</button>
     </div>
     <div class="warranty-features">
-      <div class="w-feat">
-        <span class="w-icon">🏆</span>
-        <div>
-          <strong>Official Brand Warranty</strong>
-          <p>Full 1-year manufacturer warranty included with every device.</p>
-        </div>
-      </div>
+       
       <div class="w-feat">
         <span class="w-icon">✅</span>
         <div>

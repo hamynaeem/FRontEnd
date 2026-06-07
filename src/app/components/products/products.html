@@ -7,7 +7,11 @@
 	</header>
 
 	<div class="list-body">
-		<aside class="filters">
+		<button class="filters-toggle" type="button" (click)="toggleMobileFilters()" [attr.aria-expanded]="mobileFiltersOpen">
+			{{ mobileFiltersOpen ? 'Hide Filters' : 'Show Filters' }}
+		</button>
+
+		<aside class="filters" [class.mobile-open]="mobileFiltersOpen">
 			<div class="filter-block">
 				<h4>Sorting</h4>
 				<label><input type="checkbox"> Popularity</label>

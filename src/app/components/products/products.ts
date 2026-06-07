@@ -28,6 +28,7 @@ export class Products implements OnInit {
   loading = false;
   error = '';
   categoryName = '';
+  mobileFiltersOpen = false;
   expandedProductId: number | null = null;
 
   constructor(private route: ActivatedRoute) {}
@@ -95,6 +96,10 @@ export class Products implements OnInit {
 
   isSpecsOpen(id: number): boolean {
     return this.expandedProductId === id;
+  }
+
+  toggleMobileFilters(): void {
+    this.mobileFiltersOpen = !this.mobileFiltersOpen;
   }
 
   private slugify(value: string): string {

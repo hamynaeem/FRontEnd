@@ -355,6 +355,14 @@ a {
 .settings-menu { position: absolute; right: 0; top: calc(100% + 8px); min-width: 200px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(12,46,88,0.06)); border-radius: 12px; box-shadow: 0 26px 70px rgba(2,6,23,0.14); padding: 6px; z-index: 200; border: 1px solid var(--glass-border); backdrop-filter: blur(8px) }
 .settings-item { display: block; width: 100%; text-align: left; padding: 10px 12px; background: transparent; border: none; border-radius: 8px; color: var(--text); cursor: pointer; font-weight: 600 }
 .settings-item:hover { background: rgba(255,255,255,0.02) }
+
+/* keep dropdown text readable on dark glass menu */
+.settings-menu,
+.settings-menu .settings-item,
+.settings-menu .settings-item:visited,
+.settings-menu .settings-item:active {
+	color: #fff !important;
+}
 .btn.primary {
 	background: var(--primary);
 	color: #fff;

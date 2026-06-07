@@ -110,18 +110,12 @@ openOrders(){
     this.showSettingsMenu = false;
     try { this.router.navigate(['/notifications']); } catch {}
   }
-  
-
-  logout(){
+  openAdmin(){
     this.showSettingsMenu = false;
-    // simple client-side logout: clear local session-like keys
-    try { localStorage.removeItem('app_cart_items_v1'); } catch {}
-    try { localStorage.removeItem('orders_v1'); } catch {}
-    try { localStorage.removeItem('checkout_form_draft_v1'); } catch {}
-    this.snackbarSvc.show('You have been logged out', { type: 'info', duration: 2200 });
-    try { this.router.navigate(['/Home']); } catch {}
+    try { this.router.navigate(['/admin/admin-login']); } catch {}
   }
-   loadSampleContact() {
+
+ adSampleContact() {
       this.snackbarSvc.show('Sample contact loaded into form — review and Save', { type: 'info', duration: 2500 });
     }
   

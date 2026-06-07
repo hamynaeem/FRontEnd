@@ -3,8 +3,8 @@
         <div class="store-header">
             <h3 class="section-title">New Arrivals</h3>
             <div class="controls">
-                <input class="search" type="search" placeholder="Search products..." aria-label="Search products">
-                <select class="sort" aria-label="Sort products">
+                <input class="search" type="search" placeholder="Search products..." aria-label="Search products" [value]="searchTerm" (input)="onSearch(($any($event.target).value || '').toString())">
+                <select class="sort" aria-label="Sort products" [value]="sortBy" (change)="onSortChange(($any($event.target).value || 'popular').toString())">
                     <option value="popular">Popular</option>
                     <option value="new">Newest</option>
                     <option value="price-asc">Price: Low to High</option>
@@ -23,25 +23,23 @@
                 </div>
             </aside>
 
-                <div class="product-grid" role="list">
+                <div class="state-text" *ngIf="loading">Loading products...</div>
+                <div class="state-text error" *ngIf="!loading && error">{{ error }}</div>
+                <div class="state-text" *ngIf="!loading && !error && products.length === 0">No products found.</div>
+
+                <div class="product-grid" role="list" *ngIf="!loading && !error && products.length > 0">
                 <article class="product-card liquid-3d" #card role="listitem" *ngFor="let p of products" (mousemove)="onCardMove($event, card)" (mouseleave)="onCardLeave(card)" (mouseenter)="onCardEnter(card)">
                     <img [src]="p.image" [alt]="p.title">
                     <div class="meta">
                         <h5>{{ p.title }}</h5>
                         <p class="subtitle">{{ p.subtitle }}</p>
-                        <div class="rating" [attr.aria-label]="'Rating: ' + p.rating + ' out of 5'">
-                            <span *ngFor="let s of [1,2,3,4,5]; let i = index" [class.filled]="i < p.rating">★</span>
-                        </div>
-                        <p class="status" [ngClass]="{ 'available': p.status === 'in-stock', 'muted': p.status !== 'in-stock' }">
-                            {{ p.status === 'in-stock' ? 'In stock' : (p.status === 'preorder' ? 'Available on Pre-Order' : p.status) }}
-                        </p>
+                       
                         <div class="price">
                             <span *ngIf="p.oldPrice" class="old">Rs {{ p.oldPrice | number }}</span>
                             <span class="new">Rs {{ p.price | number }}</span>
                         </div>
                         <div class="card-actions">
-                            <button class="btn primary">Add to Cart</button>
-                            <button class="btn outline">View</button>
+                             <button class="btn outline">View</button>
                         </div>
                     </div>
                 </article>
